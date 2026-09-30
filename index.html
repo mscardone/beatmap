@@ -4,135 +4,158 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BeatMap | Heart rhythms explained</title>
-<meta name="description" content="BeatMap is an animated, plain-language guide to normal heart rhythm and common arrhythmias, with a live EKG tracing. Created by Cardone Medical Consulting, LLC.">
-<meta name="theme-color" content="#2b2b2b">
+<meta name="description" content="BeatMap is an animated, plain-language guide to normal heart rhythm, common arrhythmias, heart block, pacemakers, and inherited rhythm conditions, with a live EKG tracing. Created by Cardone Medical Consulting.">
+<meta name="theme-color" content="#145C60">
+<link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <meta property="og:title" content="BeatMap | Heart rhythms explained">
-<meta property="og:description" content="Watch how the heart's electrical signal travels in normal rhythm, atrial fibrillation, flutter, SVT, ventricular tachycardia, and bundle branch block.">
+<meta property="og:description" content="Watch how the heart's electrical signal travels in normal rhythm, atrial fibrillation, flutter, SVT, heart block, ventricular tachycardia, and with a pacemaker.">
 <style>
 :root{
-  --charcoal:#2b2b2b; --gold:#c1a24a; --gold-bright:#f0cf62; --paper:#faf8f3; --card:#ffffff;
-  --ink:#2b2b2b; --muted:#6f6a62; --line:#e6e0d4; --red:#c8402f; --red-soft:#f6d9d3;
-  --muscle:#f2cdc4; --muscle-dark:#e6b6ab; --active:#cf4a3d; --septum:#dfa99e; --groove:#d8d0c2;
-  --monitor:#1c1c1c; --trace:#63e07d;
+  --teal:#145C60; --teal-dark:#0e4548; --teal-ink:#0c3436; --sea:#A7CEC7; --sea-light:#d7e9e5; --ivory:#F5F3EC; --card:#ffffff;
+  --ink:#1f2b2b; --muted:#5f6b6a; --line:#dfe3dd; --red:#c8402f; --red-soft:#f6d9d3;
+  --muscle:#f2cdc4; --muscle-dark:#e6b6ab; --active:#cf4a3d; --septum:#dfa99e; --groove:#d9d5cb;
+  --signal:#0fa3a0; --signal-bright:#25d3c9; --monitor:#0f2426; --trace:#7fe6cf;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;font-size:16px}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;font-size:16px}
 h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif}
-a{color:#8a6f1f}
+a{color:var(--teal)}
 button{font:inherit}
 
-header.top{background:var(--charcoal);color:var(--paper);padding:10px 16px;display:flex;align-items:center;gap:12px}
-header.top .mark{width:40px;height:40px;flex:0 0 auto}
+header.top{background:var(--teal);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px}
+header.top .mark{width:42px;height:42px;flex:0 0 auto}
 header.top .title{display:flex;flex-direction:column;line-height:1.15}
-header.top .title h1{margin:0;font-size:1.45rem;letter-spacing:.5px;font-weight:700}
-header.top .title span{font-size:.78rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase}
+header.top .title h1{margin:0;font-size:1.5rem;letter-spacing:.5px;font-weight:700}
+header.top .title span{font-size:.74rem;color:var(--sea);letter-spacing:2px;text-transform:uppercase}
 
 main{max-width:560px;margin:0 auto;padding:0 12px 40px}
 .demo{display:flex;flex-direction:column}
 .demo .sidecol{order:0}.demo .stagecol{order:1}
-@media(min-width:900px){ main{max-width:960px} .demo{display:grid;grid-template-columns:minmax(0,600px) minmax(300px,1fr);gap:16px;align-items:start} .demo .stagecol{grid-column:1;order:0} .demo .sidecol{grid-column:2;order:1;position:sticky;top:12px} .chips .row{flex-wrap:wrap;overflow:visible} }
+@media(min-width:900px){ main{max-width:980px} .demo{display:grid;grid-template-columns:minmax(0,600px) minmax(320px,1fr);gap:16px;align-items:start} .demo .stagecol{grid-column:1;order:0} .demo .sidecol{grid-column:2;order:1;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto} }
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);margin:12px 0;overflow:hidden}
 .stage{padding:8px 8px 0;position:relative}
 #playbtn{position:absolute;left:10px;bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:2}
 .stage svg{width:100%;height:auto;display:block;max-height:44vh;margin:0 auto}
 @media(min-width:900px){.stage svg{max-height:70vh}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:3}
+.flash.on{animation:flash .45s ease-out}
+@keyframes flash{0%{opacity:.95}100%{opacity:0}}
 .status{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 12px 2px;border-top:1px solid var(--line);flex-wrap:wrap}
 .status .rname{font-family:Georgia,serif;font-size:1.05rem;font-weight:700;line-height:1.25}
 .status .rate{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.95rem;white-space:nowrap}
 .status .rate b{color:var(--ink);font-size:1.15rem}
 .origin{padding:0 12px 8px;color:var(--ink);font-size:.9rem;line-height:1.45}
 .origin strong{color:var(--red)}
+.origin strong.ok{color:var(--teal)}
+.note{margin:0 12px 8px;padding:6px 10px;border-radius:8px;background:var(--sea-light);color:var(--teal-ink);font-size:.88rem;display:none}
+.note.show{display:block}
 
 .ecgwrap{position:relative;background:var(--monitor);background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:20px 20px;height:130px}
 .ecgwrap canvas{position:absolute;inset:0;width:100%;height:100%}
-.ecgwrap .lbl{position:absolute;left:8px;top:6px;color:#9be7a9;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;opacity:.85}
-.ecgwrap .paused-tag{position:absolute;right:10px;top:6px;color:var(--gold-bright);font-size:.75rem;letter-spacing:1px;text-transform:uppercase;display:none}
+.ecgwrap .lbl{position:absolute;left:8px;top:6px;color:var(--trace);font-size:.72rem;letter-spacing:1px;text-transform:uppercase;opacity:.9}
+.ecgwrap .paused-tag{position:absolute;right:10px;top:6px;color:#ffd166;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;display:none}
 .is-paused .ecgwrap .paused-tag{display:block}
 
 .controls{display:flex;align-items:center;gap:8px;padding:10px 12px;flex-wrap:wrap}
 .btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;color:var(--ink);font-size:.95rem;min-height:40px;display:inline-flex;align-items:center;gap:6px;touch-action:manipulation}
-.btn:hover{border-color:var(--gold)}
-.btn.primary{background:var(--charcoal);color:var(--paper);border-color:var(--charcoal);font-weight:600;min-width:112px;justify-content:center}
+.btn:hover{border-color:var(--teal)}
+.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal);font-weight:600;min-width:112px;justify-content:center}
 .btn.primary svg{width:14px;height:14px;fill:currentColor}
+.btn.tx{border-color:var(--red);color:var(--red);font-weight:600}
+.btn.tx.aden{border-color:var(--teal);color:var(--teal)}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;color:var(--ink);min-height:40px;font-size:.9rem;touch-action:manipulation}
 .seg button+button{border-left:1px solid var(--line)}
-.seg button[aria-pressed="true"]{background:var(--gold);color:#1e1a10;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--sea);color:var(--teal-ink);font-weight:700}
 .speedlbl{font-size:.8rem;color:var(--muted);margin-left:2px}
 .readlink{margin-left:auto;font-size:.9rem}
 
-.chips{padding:10px 12px 12px}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px}
+.picker select{flex:1 1 0px;min-width:0;width:0;font:inherit;font-size:1rem;padding:9px 36px 9px 12px;border:1.5px solid var(--teal);border-radius:12px;background:#fff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2714%27 height=%279%27%3E%3Cpath d=%27M1 1l6 6 6-6%27 fill=%27none%27 stroke=%27%23145C60%27 stroke-width=%272%27/%3E%3C/svg%3E") no-repeat right 12px center;color:var(--ink);-webkit-appearance:none;appearance:none;font-weight:600}
+.picker .nav{border:1.5px solid var(--line);background:#fff;border-radius:10px;width:42px;height:42px;font-size:1.2rem;cursor:pointer;color:var(--teal);flex:0 0 auto}
+.picker label{font-size:.72rem;color:var(--teal);font-weight:700;letter-spacing:1.2px;text-transform:uppercase;flex:0 0 100%;margin-bottom:-4px}
+@media(min-width:900px){.picker{display:none}}
+.chips{padding:10px 12px 8px;display:none}
+@media(min-width:900px){.chips{display:block}}
+.chips h2{margin:2px 0 4px;font-size:.95rem;color:var(--muted);font-weight:600;letter-spacing:.3px}
 .chips .hint{font-weight:400;font-size:.8rem}
 @media(min-width:900px){.chips .hint{display:none}}
-.chips h2{margin:2px 0 4px;font-size:.95rem;color:var(--muted);font-weight:600;letter-spacing:.3px}
-.chips .row{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:8px;margin:0 -12px 8px;padding:2px 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips h3{margin:6px 0 4px;font-size:.72rem;color:var(--teal);font-weight:700;letter-spacing:1.4px;text-transform:uppercase;font-family:inherit}
+.chips .row{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:8px;margin:0 -12px 6px;padding:2px 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .chips .row::-webkit-scrollbar{display:none}
-@media(min-width:900px){.chips .row{flex-wrap:wrap;overflow:visible;margin:0 0 8px;padding:0}}
-.chip{white-space:nowrap;flex:0 0 auto}
-.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;cursor:pointer;color:var(--ink);font-size:.95rem;min-height:40px;touch-action:manipulation}
-.chip:hover{border-color:var(--gold)}
-.chip[aria-pressed="true"]{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
-.chip[aria-pressed="true"]::before{content:"● ";color:var(--gold-bright)}
-.chip.bbb{border-style:dashed}
+@media(min-width:900px){.chips .row{flex-wrap:wrap;overflow:visible;margin:0 0 6px;padding:0}}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;cursor:pointer;color:var(--ink);font-size:.92rem;min-height:38px;touch-action:manipulation;white-space:nowrap;flex:0 0 auto}
+.chip:hover{border-color:var(--teal)}
+.chip[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal)}
+.chip[aria-pressed="true"]::before{content:"● ";color:var(--sea)}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:0 12px 12px;font-size:.8rem;color:var(--muted)}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:4px}
 
 /* SVG heart */
-.chamber{fill:var(--muscle);stroke:var(--charcoal);stroke-width:2.2;stroke-linejoin:round}
+.chamber{fill:var(--muscle);stroke:var(--teal-ink);stroke-width:2.2;stroke-linejoin:round}
 .chamber.v{fill:var(--muscle-dark)}
-.septum{fill:var(--septum);stroke:var(--charcoal);stroke-width:1.2}
-.groove{fill:var(--groove);stroke:var(--charcoal);stroke-width:1.2}
-.wire{fill:none;stroke:var(--gold);stroke-width:2.4;stroke-dasharray:3 4;stroke-linecap:round;opacity:.85}
+.septum{fill:var(--septum);stroke:var(--teal-ink);stroke-width:1.2}
+.groove{fill:var(--groove);stroke:var(--teal-ink);stroke-width:1.2}
+.wire{fill:none;stroke:var(--teal);stroke-width:2.4;stroke-dasharray:3 4;stroke-linecap:round;opacity:.8}
 .wire.alt{stroke:var(--red);opacity:.55}
-.trail{fill:none;stroke:var(--gold-bright);stroke-width:5;stroke-linecap:round;opacity:0;filter:url(#glow)}
+.trail{fill:none;stroke:var(--signal-bright);stroke-width:5;stroke-linecap:round;opacity:0;filter:url(#glow)}
 .trail.red{stroke:#ff6b57}
-.dot{fill:#fff;stroke:var(--gold-bright);stroke-width:3.5;opacity:0;filter:url(#glow)}
+.dot{fill:#fff;stroke:var(--signal-bright);stroke-width:3.5;opacity:0;filter:url(#glow)}
 .dot.red{stroke:#ff6b57}
-.node{fill:var(--gold);stroke:var(--charcoal);stroke-width:1.6}
-.node.hold{fill:var(--gold-bright)}
-.lab{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:11.5px;fill:var(--charcoal);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
-.lab.small{font-size:10px;fill:#5a5347}
+.node{fill:var(--sea);stroke:var(--teal-ink);stroke-width:1.6}
+.node.hold{fill:var(--signal-bright)}
+.lab{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:11.5px;fill:var(--teal-ink);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.lab.small{font-size:10px;fill:#4f5c5b}
 .lab.red{fill:var(--red);font-weight:700}
-.ripple{fill:none;stroke:var(--gold-bright);stroke-width:2.5;opacity:0}
+.lab.teal{fill:var(--teal);font-weight:700}
+.ripple{fill:none;stroke:var(--signal-bright);stroke-width:2.5;opacity:0}
 .ripple.red{stroke:var(--red)}
+.ripple.white{stroke:#fff;stroke-width:3}
 .focus-ring{fill:none;stroke:var(--red);stroke-width:2.5;transform-box:fill-box;transform-origin:center;animation:pulse 1.1s ease-out infinite}
 .is-paused .focus-ring{animation-play-state:paused}
 .focus-core{fill:var(--red);stroke:#fff;stroke-width:1.5}
 .blockx{stroke:var(--red);stroke-width:4;stroke-linecap:round}
+.zone{fill:rgba(200,64,47,.18);stroke:var(--red);stroke-width:1.5;stroke-dasharray:4 3}
+.pm-box{fill:var(--teal);stroke:#fff;stroke-width:1.5}
+.pm-lead{fill:none;stroke:#2b3a3a;stroke-width:2.2;stroke-linecap:round}
+.pm-tip{fill:#fff;stroke:var(--teal);stroke-width:2.5}
+.pm-txt{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:9px;fill:#fff;font-weight:700;pointer-events:none}
 @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.9);opacity:0}}
 
 /* Education */
 .edu{margin-top:22px}
-.edu h2.sect{font-size:1.5rem;margin:14px 0 6px}
+.edu h2.sect{font-size:1.5rem;margin:22px 0 6px;color:var(--teal-ink)}
 .edu p{margin:.5rem 0}
 .intro{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
 details.rcard{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:10px 0;scroll-margin-top:12px}
-details.rcard summary{cursor:pointer;list-style:none;padding:14px 16px;font-family:Georgia,serif;font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:10px}
+details.rcard summary{cursor:pointer;list-style:none;padding:14px 16px;font-family:Georgia,serif;font-size:1.12rem;font-weight:700;display:flex;align-items:center;gap:10px}
 details.rcard summary::-webkit-details-marker{display:none}
-details.rcard summary::after{content:"+";margin-left:auto;color:var(--gold);font-size:1.4rem;line-height:1}
+details.rcard summary::after{content:"+";margin-left:auto;color:var(--teal);font-size:1.4rem;line-height:1}
 details.rcard[open] summary::after{content:"–"}
-details.rcard summary .tag{font-family:inherit;font-size:.72rem;font-weight:400;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+details.rcard summary .tag{font-family:inherit;font-size:.7rem;font-weight:400;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
 details.rcard .body{padding:0 16px 16px}
-details.rcard h3{font-size:1rem;margin:14px 0 4px;color:#7a5f14;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.78rem}
+details.rcard h3{margin:14px 0 4px;color:var(--teal);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;font-size:.76rem}
 details.rcard .showbtn{margin-top:12px}
-.callout{background:#fbf3dc;border-left:4px solid var(--gold);padding:10px 12px;border-radius:8px;margin:10px 0}
+.callout{background:var(--sea-light);border-left:4px solid var(--teal);padding:10px 12px;border-radius:8px;margin:10px 0}
 .warn{background:var(--red-soft);border-left:4px solid var(--red);padding:10px 12px;border-radius:8px;margin:10px 0}
 
-footer{background:var(--charcoal);color:#cfc8bb;padding:24px 16px 34px;margin-top:30px;font-size:.85rem}
+footer{background:var(--teal);color:#e6efed;padding:24px 16px 34px;margin-top:30px;font-size:.85rem}
 footer .inner{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
-footer .lockup{width:230px;height:auto}
+footer .lockup{width:250px;height:auto}
 footer p{margin:0}
-footer a{color:var(--gold)}
-.sr{position:absolute;left:-9999px}
+footer a{color:var(--sea)}
 </style>
 </head>
 <body>
 
 <header class="top">
-  <svg class="mark" viewBox="0 0 256 256" aria-hidden="true"><rect x="8" y="8" width="240" height="240" rx="52" fill="#2b2b2b" stroke="#c1a24a" stroke-width="6"/><path d="M192.45,57.8 A77.0,77.0 0 1 0 192.45,166.7" fill="none" stroke="#c1a24a" stroke-width="14" stroke-linecap="round"/><line x1="138" y1="38.75" x2="138" y2="220.75" stroke="#faf8f3" stroke-width="6.12" stroke-linecap="round"/><path d="M122.25,210.25 C157.25,198.0 157.25,175.25 138.0,159.5 C118.75,143.75 118.75,115.75 138.0,100.0 C157.25,84.25 157.25,59.75 138.0,47.5" fill="none" stroke="#faf8f3" stroke-width="6.12" stroke-linecap="round"/><ellipse cx="141.5" cy="40.5" rx="8.75" ry="6.48" fill="#faf8f3"/></svg>
+  <img class="mark" src="brand/cardone-symbol-white.svg" alt="Cardone Medical Consulting">
   <div class="title"><h1>BeatMap</h1><span>Heart rhythms explained</span></div>
 </header>
 
@@ -142,6 +165,7 @@ footer a{color:var(--gold)}
 <section class="card" id="stagecard" aria-label="Animated heart">
   <div class="stage">
   <button class="btn primary" id="playbtn" aria-pressed="true"><svg viewBox="0 0 10 10" id="playicon"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg><span id="playtxt">Pause</span></button>
+  <div class="flash" id="flash"></div>
   <svg id="heart" viewBox="30 16 340 364" role="img" aria-label="Animated diagram of the heart showing the four chambers, the sinus node, the AV node, and the electrical wiring, with the current rhythm's signal travelling through it.">
     <defs>
       <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -155,6 +179,7 @@ footer a{color:var(--gold)}
       <path class="groove" d="M52,178 L358,172 C362,180 362,186 358,192 L52,194 C48,188 48,184 52,178 Z"/>
     </g>
     <g id="wires"></g>
+    <g id="device"></g>
     <g id="trails"></g>
     <circle id="node-sa" class="node" cx="140" cy="62" r="7.5"/>
     <circle id="node-av" class="node" cx="200" cy="184" r="7.5"/>
@@ -169,8 +194,8 @@ footer a{color:var(--gold)}
       <text class="lab small" x="140" y="48" text-anchor="middle">Sinus node (pacemaker)</text>
       <text class="lab small" x="212" y="176">AV node</text>
       <text class="lab small" x="214" y="214">Bundle of His</text>
-      <text class="lab small" x="150" y="228" text-anchor="end">Bundle</text>
-      <text class="lab small" x="150" y="239" text-anchor="end">branches</text>
+      <text class="lab small" x="128" y="228" text-anchor="end">Bundle</text>
+      <text class="lab small" x="128" y="239" text-anchor="end">branches</text>
     </g>
   </svg>
   </div>
@@ -179,7 +204,8 @@ footer a{color:var(--gold)}
     <div class="rate" aria-live="off"><b id="bpm">--</b> beats/min · <span id="regularity">regular</span></div>
   </div>
   <div class="origin" id="origin"></div>
-  <div class="ecgwrap"><canvas id="ecg" aria-label="Live EKG tracing"></canvas><span class="lbl">EKG · Lead II</span><span class="paused-tag">Paused</span></div>
+  <div class="note" id="note" role="status"></div>
+  <div class="ecgwrap"><canvas id="ecg" aria-label="Live EKG tracing"></canvas><span class="lbl" id="leadlbl">EKG · Lead II</span><span class="paused-tag">Paused</span></div>
   <div class="controls">
     <span class="speedlbl">Speed:</span>
     <div class="seg" role="group" aria-label="Playback speed">
@@ -187,16 +213,24 @@ footer a{color:var(--gold)}
       <button data-speed="0.5" aria-pressed="false">½ speed</button>
       <button data-speed="0.25" aria-pressed="false">¼ speed</button>
     </div>
-    <a class="readlink" id="readlink" href="#edu-sinus">Read about this rhythm ↓</a>
+    <button class="btn tx" id="shockbtn" hidden title="Deliver a shock (cardioversion or defibrillation)">⚡ Shock</button>
+    <button class="btn tx aden" id="adenbtn" hidden title="Give adenosine">💉 Adenosine</button>
+    <a class="readlink" id="readlink" href="#edu-sinus">Read about this ↓</a>
   </div>
-  <div class="legend"><span><i style="background:#f0cf62"></i>Electrical signal</span><span><i style="background:#cf4a3d"></i>Chamber squeezing</span><span><i style="background:#c8402f;border-radius:2px"></i>Rogue source or block</span></div>
+  <div class="legend"><span><i style="background:#25d3c9"></i>Electrical signal</span><span><i style="background:#cf4a3d"></i>Chamber squeezing</span><span><i style="background:#c8402f;border-radius:2px"></i>Rogue source or block</span><span><i style="background:#145C60;border-radius:2px"></i>Pacemaker</span></div>
 </section>
 </div>
 
 <div class="sidecol">
-<section class="card chips" aria-label="Choose a rhythm">
-  <h2>Choose a rhythm <span class="hint">(swipe for more)</span></h2>
-  <div class="row" id="chips-rhythm"></div>
+<section class="card picker" aria-label="Choose a rhythm">
+  <label for="rsel">Choose a rhythm</label>
+  <button class="nav" id="prevbtn" aria-label="Previous rhythm">‹</button>
+  <select id="rsel"></select>
+  <button class="nav" id="nextbtn" aria-label="Next rhythm">›</button>
+</section>
+<section class="card chips" aria-label="All rhythms">
+  <h2>Choose a rhythm <span class="hint">(swipe each row for more)</span></h2>
+  <div id="chipgroups"></div>
 </section>
 </div>
 </div>
@@ -207,10 +241,11 @@ footer a{color:var(--gold)}
     <p>Your heart has four chambers. The two upper chambers are the <strong>atria</strong>, which collect blood and give it a gentle push into the lower chambers. The two lower chambers are the <strong>ventricles</strong>, which do the heavy work of pumping blood to the lungs and the rest of the body. For all of this to work, the chambers need to squeeze in the right order, and that order is set by the heart's electrical system.</p>
     <p>A normal heartbeat starts in the <strong>sinus node</strong>, a small cluster of cells in the top of the right atrium. The sinus node is the heart's natural pacemaker. It sends out a signal that spreads across both atria and makes them squeeze. The signal then arrives at the <strong>AV node</strong>, which sits at the junction between the upper and lower chambers. The AV node is the only electrical doorway between the atria and the ventricles. It holds the signal for a fraction of a second so the ventricles have time to fill with blood. From there the signal travels down the <strong>bundle of His</strong> and splits into the right and left <strong>bundle branches</strong>. These are fast wires that carry the signal to every part of the ventricles almost at once, so both ventricles squeeze together in one strong, coordinated beat.</p>
     <p>An EKG records this electrical activity from the skin. The small <strong>P wave</strong> is the atria being activated. The tall, sharp <strong>QRS complex</strong> is the ventricles being activated. The rounded <strong>T wave</strong> is the ventricles resetting for the next beat. When the sinus node is in charge and the signal follows the normal wiring, the tracing is called <strong>normal sinus rhythm</strong>.</p>
-    <div class="callout"><strong>The key idea behind every abnormal rhythm:</strong> the heart is full of cells that can generate electrical signals. In a normal heart the sinus node fires first and keeps everyone else in line. An arrhythmia happens when some other group of cells starts sending out its own rogue signals, or when a signal gets caught in a loop and keeps going around, so that the sinus node is no longer in charge. The animation above shows where each rhythm comes from and how it travels through the heart.</div>
+    <div class="callout"><strong>The key idea behind every abnormal rhythm:</strong> the heart is full of cells that can generate electrical signals. In a normal heart the sinus node fires first and keeps everyone else in line. An arrhythmia happens when some other group of cells starts sending out its own rogue signals, or when a signal gets caught in a loop and keeps going around, so that the sinus node is no longer in charge. A second family of problems is the opposite: the wiring is slow or blocked, so the signal does not get through. The animation above shows where each rhythm comes from and how it travels through the heart.</div>
+    <p><strong>About the Shock and Adenosine buttons.</strong> For rhythms that are treated with an electrical shock or with the medicine adenosine, a button appears under the tracing so you can watch the rhythm convert back to normal. These are simplified demonstrations of what happens in the emergency department or the electrophysiology lab.</p>
   </div>
 
-  <h2 class="sect">The rhythms</h2>
+  <h2 class="sect">Normal rhythm and the wiring</h2>
 
   <details class="rcard" id="edu-sinus">
     <summary>Normal sinus rhythm <span class="tag">Normal</span></summary>
@@ -218,9 +253,146 @@ footer a{color:var(--gold)}
       <p>This is the normal rhythm of a healthy heart. The sinus node fires between 60 and 100 times per minute at rest, each signal follows the normal wiring, and the atria and ventricles squeeze in the proper order. Your heart rate rises with exercise, stress, fever, pain, or dehydration, and it slows during sleep or in people who are very fit. A fast sinus rhythm is called sinus tachycardia and a slow one is called sinus bradycardia. Both are usually the heart responding correctly to what the body needs rather than an electrical problem in the heart itself.</p>
       <h3>On the EKG</h3>
       <p>Every beat shows a P wave, then a narrow QRS complex, then a T wave, all evenly spaced.</p>
-      <button class="btn showbtn" data-show="sinus">Show this rhythm in the animation ↑</button>
+      <button class="btn showbtn" data-show="sinus">Show this in the animation ↑</button>
     </div>
   </details>
+
+  <details class="rcard" id="edu-sss">
+    <summary>Slow sinus rhythm and sick sinus syndrome <span class="tag">Slow</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>The sinus node is still in charge, but it is firing too slowly or pausing. A slow sinus rhythm is normal in athletes and during sleep. When the sinus node has worn out with age or been damaged, it can become unreliable, firing slowly, stopping for several seconds at a time, or alternating between too slow and too fast. This is called sick sinus syndrome.</p>
+      <h3>What you might feel</h3>
+      <p>Tiredness, poor exercise tolerance, lightheadedness, or brief spells of near-fainting or fainting when the heart pauses. Some people notice nothing and it is found on a monitor.</p>
+      <h3>Risk factors and causes</h3>
+      <p>Age is the most common factor. Others include coronary artery disease, previous heart surgery, an underactive thyroid, sleep apnea, and medicines that slow the heart, such as beta blockers, diltiazem, verapamil, and digoxin. Sick sinus syndrome often occurs together with atrial fibrillation.</p>
+      <h3>How it is treated</h3>
+      <p>The first step is to stop or adjust any medicine that is slowing the heart and to treat reversible causes. When the slow rate or the pauses cause symptoms, the treatment is a permanent pacemaker, usually one with a lead in the atrium so that the device can take over the job of the sinus node. See the pacemaker section below.</p>
+      <button class="btn showbtn" data-show="sss">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-rbbb">
+    <summary>Right bundle branch block (RBBB) <span class="tag">Wiring</span></summary>
+    <div class="body">
+      <p>A bundle branch block is not an arrhythmia. The sinus node is still in charge and the heart rate is normal. The problem is in the wiring below the AV node. One of the two bundle branches is blocked or slowed, so the signal reaches one ventricle late by spreading through the muscle from the other side. Both ventricles still squeeze, but not quite together.</p>
+      <h3>What is happening</h3>
+      <p>The right bundle branch is blocked. The signal travels normally down the left bundle branch, activates the left ventricle on time, and then spreads slowly across the septum through muscle to activate the right ventricle late.</p>
+      <h3>What it means</h3>
+      <p>Right bundle branch block is common and is often found in people with completely normal hearts, especially as they get older. It can also be seen with lung disease, a blood clot in the lungs, some congenital heart conditions, or after heart surgery. In the absence of other problems it does not cause symptoms, does not affect how well the heart pumps, and does not need treatment. Your doctor may order an echocardiogram (an ultrasound of the heart) once to make sure the heart itself is normal.</p>
+      <h3>On the EKG</h3>
+      <p>The rhythm and rate are normal, but each QRS complex is wide. The animation switches to lead V1, the chest lead that sits over the right ventricle, where RBBB shows its classic shape with a second upward bump at the end of the QRS.</p>
+      <button class="btn showbtn" data-show="rbbb">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-lbbb">
+    <summary>Left bundle branch block (LBBB) <span class="tag">Wiring</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>The left bundle branch is blocked. The signal travels down the right bundle branch, activates the right ventricle first, and then spreads slowly across the septum through muscle to activate the left ventricle late. Because the left ventricle is the main pumping chamber, this delay can make its squeeze less efficient.</p>
+      <h3>What it means</h3>
+      <p>Left bundle branch block is more likely than right bundle branch block to be a sign of an underlying heart condition, such as long-standing high blood pressure, coronary artery disease, a weakened heart muscle, or aortic valve disease. It can also appear after procedures on the aortic valve. Many people with LBBB feel entirely well. Your doctor will usually order an echocardiogram and sometimes a stress test to look for a cause. A new LBBB in someone with chest pain is treated as a possible heart attack until proven otherwise.</p>
+      <h3>How it is treated</h3>
+      <p>There is no treatment for the block itself, and it does not need one if the heart is otherwise healthy. If LBBB occurs together with heart failure and a weak heart muscle, a special pacemaker that resynchronizes the two ventricles (called CRT, or cardiac resynchronization therapy) can improve symptoms and heart function. Compare the LBBB animation with the CRT animation in the pacemaker section. Very rarely, bundle branch block progresses to a complete block of the AV node, which would require a regular pacemaker.</p>
+      <h3>On the EKG</h3>
+      <p>The rhythm and rate are normal, but each QRS complex is wide and often notched, and the T wave points the opposite way from the QRS.</p>
+      <button class="btn showbtn" data-show="lbbb">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <h2 class="sect">Heart block</h2>
+  <p>Heart block means that the signal from the atria is delayed or stopped on its way to the ventricles, usually at the AV node or just below it. It has nothing to do with blocked arteries. There are three degrees, and the number tells you how serious it is.</p>
+
+  <details class="rcard" id="edu-avb1">
+    <summary>First-degree AV block <span class="tag">Heart block</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>Every signal gets through, but the AV node holds each one for longer than normal. The atria and ventricles still beat in sequence at a normal rate.</p>
+      <h3>What it means</h3>
+      <p>First-degree block is common, often causes no symptoms, and by itself is usually harmless. It is more common with age, in athletes, and in people taking beta blockers, diltiazem, verapamil, or digoxin. It can also follow a heart attack or occur with Lyme disease. It rarely needs treatment, although your doctor may review your medicines and keep an eye on it over time.</p>
+      <h3>On the EKG</h3>
+      <p>The gap between the P wave and the QRS (the PR interval) is longer than normal, but every P wave is followed by a QRS.</p>
+      <button class="btn showbtn" data-show="avb1">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-wenck">
+    <summary>Second-degree AV block, type 1 (Wenckebach) <span class="tag">Heart block</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>The AV node gets progressively more tired with each beat. It holds the signal a little longer, then longer still, until one signal does not get through at all and a beat is dropped. The AV node then recovers and the pattern starts again.</p>
+      <h3>What it means</h3>
+      <p>Wenckebach block is usually benign. It is common during sleep, in athletes, and in people on heart-slowing medicines. It is caused by the AV node itself, which is a reliable structure, so it rarely progresses to complete block. Most people need no treatment. A pacemaker is considered only if the dropped beats cause symptoms such as dizziness or fainting.</p>
+      <h3>On the EKG</h3>
+      <p>The PR interval gets longer with each beat until a P wave appears with no QRS after it. The pattern repeats in groups.</p>
+      <button class="btn showbtn" data-show="wenck">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-mobitz2">
+    <summary>Second-degree AV block, type 2 (Mobitz II) <span class="tag">Heart block</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>Signals get through normally and then, without warning, one is dropped. The problem here is usually below the AV node, in the bundle of His or the bundle branches, which is the fast wiring that carries the signal to the ventricles. That wiring is less reliable than the AV node and can fail suddenly.</p>
+      <h3>What it means</h3>
+      <p>Mobitz II is more serious than type 1 because it can progress without warning to complete heart block, which can cause fainting or cardiac arrest. It is usually caused by disease of the conduction system from aging, a previous heart attack, or a cardiomyopathy. A permanent pacemaker is recommended for most people with Mobitz II even if they feel well.</p>
+      <h3>On the EKG</h3>
+      <p>The PR interval stays the same from beat to beat, and then a P wave suddenly appears with no QRS after it.</p>
+      <button class="btn showbtn" data-show="mobitz2">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-chb">
+    <summary>Third-degree (complete) heart block <span class="tag">Heart block</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>No signals get through from the atria to the ventricles. The atria keep beating under the control of the sinus node, but the ventricles are cut off. Fortunately the heart has backup pacemaker cells below the block, in the bundle of His or in the ventricles themselves, and these take over. The backup is slow, often 30 to 45 beats per minute, and it is not reliable. On the animation you can see the atria and ventricles beating completely independently of each other.</p>
+      <h3>What you might feel</h3>
+      <p>Severe tiredness, shortness of breath, lightheadedness, fainting, or in some cases cardiac arrest. Some people with a stable backup rhythm feel surprisingly little.</p>
+      <h3>Risk factors and causes</h3>
+      <p>Aging of the conduction system is the most common cause. Others include a heart attack, heart surgery or valve procedures, cardiomyopathies, infections such as Lyme disease, some inherited conditions, and medicine toxicity. Complete heart block can be present from birth.</p>
+      <h3>How it is treated</h3>
+      <p>Complete heart block is treated with a pacemaker. In the emergency department a temporary pacemaker or medicines may be used until a permanent device can be placed. Because the sinus node usually still works, a dual chamber pacemaker is typical: it senses each atrial beat and then paces the ventricles a fraction of a second later, restoring the normal sequence. See the pacemaker section below.</p>
+      <h3>On the EKG</h3>
+      <p>P waves march along at one rate and QRS complexes at a slower rate, with no fixed relationship between them.</p>
+      <button class="btn showbtn" data-show="chb">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <h2 class="sect">Extra beats</h2>
+
+  <details class="rcard" id="edu-pac">
+    <summary>Premature atrial contractions (PACs) <span class="tag">Extra beats</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>A spot in the atria fires one beat early, before the sinus node was due. The early beat travels through the AV node normally, so the ventricles squeeze early too. The sinus node then resets, which leaves a short pause before the next normal beat.</p>
+      <h3>What you might feel</h3>
+      <p>Most PACs are not felt at all. When they are, people usually notice the pause rather than the early beat, and describe it as a skipped beat, a flutter, or a thump. The beat after the pause can feel stronger because the heart had extra time to fill.</p>
+      <h3>Risk factors and causes</h3>
+      <p>Almost everyone has PACs. They are more frequent with caffeine, alcohol, nicotine, stress, poor sleep, dehydration, and stimulant medicines. Very frequent PACs can be a sign that atrial fibrillation may develop later.</p>
+      <h3>How it is treated</h3>
+      <p>Usually no treatment is needed beyond reassurance and avoiding triggers. If they are frequent and bothersome, a beta blocker can reduce them.</p>
+      <button class="btn showbtn" data-show="pac">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-pvc">
+    <summary>Premature ventricular contractions (PVCs) <span class="tag">Extra beats</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>A spot in the ventricles fires one beat early. Because the signal starts in the muscle rather than the wiring, the ventricles squeeze in an uncoordinated way and the beat pumps less blood than normal. The next sinus signal usually arrives while the ventricles are still recovering and does not get through, so there is a longer pause before the next normal beat.</p>
+      <h3>What you might feel</h3>
+      <p>A skipped beat, a pause, or a hard thump. The thump is the strong beat after the pause. Many people feel PVCs most at rest, in bed, or after a meal.</p>
+      <h3>Risk factors and causes</h3>
+      <p>PVCs occur in healthy hearts and are more frequent with caffeine, alcohol, stress, lack of sleep, low potassium or magnesium, and an overactive thyroid. They are also more common in people with previous heart attacks, cardiomyopathy, or heart failure. When PVCs make up more than about 10 to 15 percent of all beats over a day, they can gradually weaken the heart.</p>
+      <h3>How it is treated</h3>
+      <p>In a normal heart, occasional PVCs need no treatment. If they are frequent or bothersome, a beta blocker or calcium channel blocker can help, and catheter ablation can eliminate the rogue spot. Your doctor may order an echocardiogram and a 24-hour monitor to count them and to check the heart muscle.</p>
+      <button class="btn showbtn" data-show="pvc">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <h2 class="sect">Rhythms from the atria</h2>
 
   <details class="rcard" id="edu-afib">
     <summary>Atrial fibrillation (AFib) <span class="tag">Atria</span></summary>
@@ -235,14 +407,14 @@ footer a{color:var(--gold)}
       <p>Treatment has three main goals.</p>
       <p><strong>1. Preventing stroke.</strong> This is the most important goal. Because the atria quiver instead of squeezing, blood can pool and form clots, especially in a small pouch of the left atrium called the left atrial appendage. If a clot breaks loose it can travel to the brain and cause a stroke. Your doctor estimates your stroke risk using a score based on your age, sex, and medical conditions. Most people with AFib and other risk factors are advised to take a blood thinner (an anticoagulant) such as apixaban, rivaroxaban, dabigatran, or warfarin. People who cannot take blood thinners may be candidates for a procedure that seals off the left atrial appendage.</p>
       <p><strong>2. Rate control.</strong> Medicines such as beta blockers (metoprolol, carvedilol), calcium channel blockers (diltiazem, verapamil), or digoxin slow the AV node so that fewer signals get through to the ventricles. The AFib is still there, but the heart beats at a comfortable rate. For many people this is all that is needed.</p>
-      <p><strong>3. Rhythm control.</strong> This means trying to restore and maintain normal sinus rhythm. Options include an electrical cardioversion (a brief, controlled shock delivered under sedation, often called a DCCV), antiarrhythmic medicines such as flecainide, propafenone, sotalol, dofetilide, or amiodarone, and catheter ablation, a procedure in which a cardiologist uses a thin tube to isolate the pulmonary veins so the rogue signals cannot reach the rest of the atrium. Rhythm control is often chosen for people who have troublesome symptoms, who are younger, or whose AFib is recent.</p>
+      <p><strong>3. Rhythm control.</strong> This means trying to restore and maintain normal sinus rhythm. Options include an electrical cardioversion (a brief, controlled shock delivered under sedation, often called a DCCV), antiarrhythmic medicines such as flecainide, propafenone, sotalol, dofetilide, or amiodarone, and catheter ablation, a procedure in which a cardiologist uses a thin tube to isolate the pulmonary veins so the rogue signals cannot reach the rest of the atrium. Rhythm control is often chosen for people who have troublesome symptoms, who are younger, or whose AFib is recent. Press the Shock button above to see a cardioversion.</p>
       <div class="warn"><strong>Blood thinners around a cardioversion.</strong> Restoring normal rhythm, whether by shock, by medicine, or on its own, can dislodge a clot that has been sitting quietly in the atrium. For this reason a cardioversion is normally done only after at least three weeks of uninterrupted blood thinner, or after an ultrasound from inside the esophagus confirms that there is no clot. Blood thinners are then continued for at least four weeks afterward, and usually long term if your stroke risk is high. Do not skip doses in the weeks around a cardioversion.</div>
       <p>Treating the causes matters too. Controlling blood pressure, treating sleep apnea, losing weight, limiting alcohol, and staying active all reduce how often AFib comes back.</p>
       <h3>When to seek care right away</h3>
       <p>Go to the emergency department or call 911 for chest pain, fainting, severe shortness of breath, or any sign of stroke such as sudden weakness, facial droop, or trouble speaking.</p>
       <h3>On the EKG</h3>
       <p>There are no P waves. The baseline looks wavy or scribbly, and the QRS complexes are irregularly spaced with no pattern.</p>
-      <button class="btn showbtn" data-show="afib">Show this rhythm in the animation ↑</button>
+      <button class="btn showbtn" data-show="afib">Show this in the animation ↑</button>
     </div>
   </details>
 
@@ -259,7 +431,7 @@ footer a{color:var(--gold)}
       <p>Flutter carries the same risk of stroke as AFib, so the same blood thinner rules apply, including the rules around cardioversion. Rate control medicines can be used but often work less well than in AFib because the loop is so regular. Electrical cardioversion usually stops flutter easily. The best long-term treatment for typical flutter is catheter ablation, in which a small line of tissue in the right atrium is cauterized to break the loop. This cures typical flutter in more than 90 percent of people, which is why ablation is often recommended early.</p>
       <h3>On the EKG</h3>
       <p>Instead of P waves there is a continuous sawtooth pattern, with a QRS complex after every second or third tooth.</p>
-      <button class="btn showbtn" data-show="flutter">Show this rhythm in the animation ↑</button>
+      <button class="btn showbtn" data-show="flutter">Show this in the animation ↑</button>
     </div>
   </details>
 
@@ -276,27 +448,12 @@ footer a{color:var(--gold)}
       <p>Correcting triggers such as electrolytes, thyroid problems, and stimulants comes first. Beta blockers or calcium channel blockers can slow the rhythm or reduce how often it happens. Antiarrhythmic medicines are an option. Catheter ablation, in which the cardiologist finds the rogue cluster of cells and cauterizes it, can be a cure. This rhythm does not carry the same clot and stroke risk as atrial fibrillation because the atria still squeeze.</p>
       <h3>On the EKG</h3>
       <p>The rhythm is fast and regular. There is a P wave before every QRS, but it has a different shape from a normal sinus P wave because the signal starts in a different place.</p>
-      <button class="btn showbtn" data-show="eat">Show this rhythm in the animation ↑</button>
+      <button class="btn showbtn" data-show="eat">Show this in the animation ↑</button>
     </div>
   </details>
 
-  <details class="rcard" id="edu-avrt">
-    <summary>AVRT (extra pathway, includes WPW) <span class="tag">Loop</span></summary>
-    <div class="body">
-      <h3>What is happening</h3>
-      <p>AVRT stands for atrioventricular reentrant tachycardia. Some people are born with an extra strand of muscle that connects an atrium directly to a ventricle, bypassing the AV node. This is called an accessory pathway. Normally the insulating layer between the upper and lower chambers has only one doorway, the AV node. With an accessory pathway there are two. A signal can travel down through the AV node to the ventricles and then race back up the accessory pathway into the atria, where it starts the whole loop again. The loop spins round and round, driving the heart at 150 to 250 beats per minute. When the accessory pathway is visible on a resting EKG, the condition is called Wolff-Parkinson-White syndrome, or WPW.</p>
-      <h3>What you might feel</h3>
-      <p>Episodes typically start and stop suddenly, like a switch. People describe a racing heart, pounding in the neck, lightheadedness, shortness of breath, or anxiety. Fainting is uncommon but can occur.</p>
-      <h3>Risk factors and causes</h3>
-      <p>The accessory pathway is present from birth, so this rhythm is often first noticed in children, teenagers, or young adults. It can run in families. Episodes may be triggered by exercise, stress, caffeine, alcohol, or lack of sleep, but often there is no trigger at all.</p>
-      <h3>How it is treated</h3>
-      <p>During an episode, vagal maneuvers such as bearing down hard, or bearing down and then lying flat with the legs raised, can break the loop. In the emergency department a medicine called adenosine briefly stops the AV node and interrupts the loop within seconds. Longer term, catheter ablation of the accessory pathway is the preferred treatment. It cures the problem in about 95 percent of people and is usually recommended for anyone who has had symptoms. Beta blockers or calcium channel blockers can be used while waiting for ablation.</p>
-      <div class="warn">People with WPW who also develop atrial fibrillation can have dangerously fast heart rates, because the accessory pathway does not slow signals down the way the AV node does. For this reason some common heart medicines, including digoxin, verapamil, and diltiazem, are avoided in people known to have WPW. Make sure every doctor treating you knows you have an accessory pathway.</div>
-      <h3>On the EKG</h3>
-      <p>During an episode the rhythm is fast, regular, and narrow, with a small inverted P wave hiding just after each QRS. Between episodes a person with WPW may show a short PR interval and a slurred upstroke called a delta wave.</p>
-      <button class="btn showbtn" data-show="avrt">Show this rhythm in the animation ↑</button>
-    </div>
-  </details>
+  <h2 class="sect">Fast loops (SVT)</h2>
+  <p>SVT stands for supraventricular tachycardia, a general term for a fast rhythm that starts above the ventricles. When doctors say "SVT" they most often mean one of the two loop rhythms below, AVNRT or AVRT, which start and stop suddenly.</p>
 
   <details class="rcard" id="edu-avnrt">
     <summary>AVNRT (loop inside the AV node) <span class="tag">Loop</span></summary>
@@ -308,12 +465,47 @@ footer a{color:var(--gold)}
       <h3>Risk factors and causes</h3>
       <p>The two lanes are something you are born with. AVNRT is more common in women and often first appears in the teens through the forties. Episodes can be brought on by caffeine, alcohol, stress, exhaustion, stimulant medicines, or nothing in particular. In a structurally normal heart it is uncomfortable but not dangerous.</p>
       <h3>How it is treated</h3>
-      <p>Vagal maneuvers, such as bearing down hard or the modified maneuver of bearing down and then lying back with the legs lifted, stop many episodes at home. In the emergency department, adenosine ends the rhythm within seconds in most cases, and diltiazem or a beta blocker are alternatives. For people with frequent episodes, daily beta blockers or calcium channel blockers reduce recurrences, and some people carry a single dose to take when an episode starts. Catheter ablation of the slow lane cures AVNRT in more than 95 percent of people, with a small risk of about 1 percent of damaging the AV node enough to need a pacemaker.</p>
+      <p>Vagal maneuvers, such as bearing down hard or the modified maneuver of bearing down and then lying back with the legs lifted, stop many episodes at home. In the emergency department, adenosine ends the rhythm within seconds in most cases, and diltiazem or a beta blocker are alternatives. Press the Adenosine button above to see this. For people with frequent episodes, daily beta blockers or calcium channel blockers reduce recurrences, and some people carry a single dose to take when an episode starts. Catheter ablation of the slow lane cures AVNRT in more than 95 percent of people, with a small risk of about 1 percent of damaging the AV node enough to need a pacemaker.</p>
       <h3>On the EKG</h3>
       <p>A fast, very regular, narrow rhythm. P waves are usually invisible because they are buried inside the QRS complexes.</p>
-      <button class="btn showbtn" data-show="avnrt">Show this rhythm in the animation ↑</button>
+      <button class="btn showbtn" data-show="avnrt">Show this in the animation ↑</button>
     </div>
   </details>
+
+  <details class="rcard" id="edu-avrt">
+    <summary>AVRT (loop using an extra pathway) <span class="tag">Loop</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>AVRT stands for atrioventricular reentrant tachycardia. Some people are born with an extra strand of muscle that connects an atrium directly to a ventricle, bypassing the AV node. This is called an accessory pathway. Normally the insulating layer between the upper and lower chambers has only one doorway, the AV node. With an accessory pathway there are two. A signal can travel down through the AV node to the ventricles and then race back up the accessory pathway into the atria, where it starts the whole loop again. The loop spins round and round, driving the heart at 150 to 250 beats per minute.</p>
+      <h3>What you might feel</h3>
+      <p>Episodes typically start and stop suddenly, like a switch. People describe a racing heart, pounding in the neck, lightheadedness, shortness of breath, or anxiety. Fainting is uncommon but can occur.</p>
+      <h3>Risk factors and causes</h3>
+      <p>The accessory pathway is present from birth, so this rhythm is often first noticed in children, teenagers, or young adults. It can run in families. Episodes may be triggered by exercise, stress, caffeine, alcohol, or lack of sleep, but often there is no trigger at all. When the pathway is visible on a resting EKG, the condition is called Wolff-Parkinson-White syndrome, described in the next card.</p>
+      <h3>How it is treated</h3>
+      <p>During an episode, vagal maneuvers such as bearing down hard, or bearing down and then lying flat with the legs raised, can break the loop. In the emergency department a medicine called adenosine briefly stops the AV node and interrupts the loop within seconds. Press the Adenosine button above to see this. Longer term, catheter ablation of the accessory pathway is the preferred treatment. It cures the problem in about 95 percent of people and is usually recommended for anyone who has had symptoms. Beta blockers or calcium channel blockers can be used while waiting for ablation.</p>
+      <h3>On the EKG</h3>
+      <p>During an episode the rhythm is fast, regular, and narrow, with a small inverted P wave hiding just after each QRS.</p>
+      <button class="btn showbtn" data-show="avrt">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-wpw">
+    <summary>Wolff-Parkinson-White (WPW) pattern <span class="tag">Extra pathway</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>WPW is what an accessory pathway looks like on a resting EKG, between episodes of fast heartbeat. The sinus node is in charge and the rate is normal, but every signal reaches the ventricles by two routes at once: the normal route through the AV node, and a shortcut through the accessory pathway. The shortcut has no built-in delay, so a small part of the ventricle is activated a fraction of a second early. This early activation is called pre-excitation.</p>
+      <h3>What it means</h3>
+      <p>Many people with the WPW pattern never have a problem. Others develop episodes of AVRT, the loop rhythm described above. The main concern is what happens if a person with WPW develops atrial fibrillation. The AV node normally protects the ventricles by filtering the hundreds of chaotic signals in AFib, but the accessory pathway does no filtering, so the ventricles can be driven at 250 beats per minute or more. This is rare, but it can cause collapse or cardiac arrest, and it is the reason WPW is taken seriously.</p>
+      <h3>How it is treated</h3>
+      <p>People with WPW and symptoms are usually offered catheter ablation of the pathway, which is curative in about 95 percent of cases. People with the pattern but no symptoms may be offered testing in the electrophysiology lab to see whether the pathway is capable of conducting dangerously fast; if it is, ablation is recommended. Some common heart medicines, including digoxin, verapamil, and diltiazem, are avoided in people with WPW because they can make conduction over the pathway faster.</p>
+      <div class="warn">Make sure every doctor treating you knows you have WPW, especially in an emergency, because the choice of medicines for a fast heart rhythm is different.</div>
+      <h3>On the EKG</h3>
+      <p>The PR interval is short and the start of the QRS is slurred, which is called a delta wave. Watch for the small early activation of the left ventricle near the extra pathway in the animation.</p>
+      <button class="btn showbtn" data-show="wpw">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <h2 class="sect">Rhythms from the ventricles and inherited conditions</h2>
 
   <details class="rcard" id="edu-vt">
     <summary>Ventricular tachycardia (VT) <span class="tag">Ventricles</span></summary>
@@ -325,42 +517,112 @@ footer a{color:var(--gold)}
       <h3>Risk factors and causes</h3>
       <p>The most common cause is scar tissue from a previous heart attack. Other causes include heart failure and a weakened heart muscle from any cause, inherited heart conditions such as hypertrophic cardiomyopathy, long QT syndrome, Brugada syndrome, and arrhythmogenic cardiomyopathy, very low or high potassium or magnesium, certain medicines, and stimulant drugs such as cocaine. Some forms of VT occur in completely normal hearts and are much less dangerous.</p>
       <h3>How it is treated</h3>
-      <p>If the blood pressure is low or the person is unwell, VT is treated immediately with an electrical shock (cardioversion). If the person is stable, medicines such as amiodarone, procainamide, or lidocaine may be tried. Fixing the cause matters: opening blocked arteries, correcting potassium and magnesium, and stopping offending drugs. To protect against sudden death, many people with VT and a weakened heart are offered an implantable cardioverter-defibrillator (ICD), a small device under the skin that watches the rhythm and delivers a shock if VT or ventricular fibrillation occurs. Beta blockers and antiarrhythmic medicines reduce how often VT happens, and catheter ablation can target the scar tissue where the loop lives.</p>
+      <p>If the blood pressure is low or the person is unwell, VT is treated immediately with an electrical shock (cardioversion). Press the Shock button above to see this. If the person is stable, medicines such as amiodarone, procainamide, or lidocaine may be tried. Fixing the cause matters: opening blocked arteries, correcting potassium and magnesium, and stopping offending drugs. To protect against sudden death, many people with VT and a weakened heart are offered an implantable cardioverter-defibrillator (ICD), a small device under the skin that watches the rhythm and delivers a shock if VT or ventricular fibrillation occurs. Beta blockers and antiarrhythmic medicines reduce how often VT happens, and catheter ablation can target the scar tissue where the loop lives.</p>
       <div class="warn">Anyone who has fainted, or who has a fast heartbeat with chest pain, shortness of breath, or confusion, should call 911. Do not drive yourself.</div>
       <h3>On the EKG</h3>
       <p>The rhythm is fast and the QRS complexes are wide and bizarre looking, because the signal is spreading slowly through muscle instead of along the fast wiring.</p>
-      <button class="btn showbtn" data-show="vt">Show this rhythm in the animation ↑</button>
+      <button class="btn showbtn" data-show="vt">Show this in the animation ↑</button>
     </div>
   </details>
 
-  <h2 class="sect">Bundle branch blocks</h2>
-  <p>A bundle branch block is not an arrhythmia. The sinus node is still in charge and the heart rate is normal. The problem is in the wiring below the AV node. One of the two bundle branches is blocked or slowed, so the signal reaches one ventricle late by spreading through the muscle from the other side. Both ventricles still squeeze, but not quite together. Bundle branch block is usually found by chance on an EKG, and the words "right bundle branch block" or "left bundle branch block" on an EKG report are what prompt many questions.</p>
-
-  <details class="rcard" id="edu-rbbb">
-    <summary>Right bundle branch block (RBBB) <span class="tag">Wiring</span></summary>
+  <details class="rcard" id="edu-vf">
+    <summary>Ventricular fibrillation (VF) and defibrillation <span class="tag">Cardiac arrest</span></summary>
     <div class="body">
       <h3>What is happening</h3>
-      <p>The right bundle branch is blocked. The signal travels normally down the left bundle branch, activates the left ventricle on time, and then spreads slowly across the septum through muscle to activate the right ventricle late.</p>
-      <h3>What it means</h3>
-      <p>Right bundle branch block is common and is often found in people with completely normal hearts, especially as they get older. It can also be seen with lung disease, a blood clot in the lungs, some congenital heart conditions, or after heart surgery. In the absence of other problems it does not cause symptoms, does not affect how well the heart pumps, and does not need treatment. Your doctor may order an echocardiogram (an ultrasound of the heart) once to make sure the heart itself is normal.</p>
-      <h3>On the EKG</h3>
-      <p>The rhythm and rate are normal, but each QRS complex is wide with a characteristic notched or slurred shape.</p>
-      <button class="btn showbtn" data-show="rbbb">Show this in the animation ↑</button>
-    </div>
-  </details>
-
-  <details class="rcard" id="edu-lbbb">
-    <summary>Left bundle branch block (LBBB) <span class="tag">Wiring</span></summary>
-    <div class="body">
-      <h3>What is happening</h3>
-      <p>The left bundle branch is blocked. The signal travels down the right bundle branch, activates the right ventricle first, and then spreads slowly across the septum through muscle to activate the left ventricle late. Because the left ventricle is the main pumping chamber, this delay can make its squeeze less efficient.</p>
-      <h3>What it means</h3>
-      <p>Left bundle branch block is more likely than right bundle branch block to be a sign of an underlying heart condition, such as long-standing high blood pressure, coronary artery disease, a weakened heart muscle, or aortic valve disease. It can also appear after procedures on the aortic valve. Many people with LBBB feel entirely well. Your doctor will usually order an echocardiogram and sometimes a stress test to look for a cause. A new LBBB in someone with chest pain is treated as a possible heart attack until proven otherwise.</p>
+      <p>Ventricular fibrillation is the ventricular version of atrial fibrillation, and it is fatal within minutes if it is not treated. Countless spots in the ventricles fire chaotically, the ventricles quiver instead of squeezing, and no blood is pumped at all. The person collapses, stops breathing normally, and has no pulse. This is cardiac arrest.</p>
+      <h3>Risk factors and causes</h3>
+      <p>VF is most often triggered by a heart attack in progress, by ventricular tachycardia that deteriorates, or by a severely weakened heart. Inherited conditions such as Brugada syndrome and long QT syndrome, severe electrolyte disturbances, drug overdoses, electrocution, and a blow to the chest at exactly the wrong moment can also cause it.</p>
       <h3>How it is treated</h3>
-      <p>There is no treatment for the block itself, and it does not need one if the heart is otherwise healthy. If LBBB occurs together with heart failure and a weak heart muscle, a special pacemaker that resynchronizes the two ventricles (called CRT, or cardiac resynchronization therapy) can improve symptoms and heart function. Very rarely, bundle branch block progresses to a complete block of the AV node, which would require a regular pacemaker.</p>
+      <p>The only effective treatment is a defibrillation shock, delivered as quickly as possible, together with CPR to keep blood moving until the shock can be given. Every minute of delay reduces the chance of survival by about 10 percent. This is why automated external defibrillators (AEDs) are placed in public buildings and why bystander CPR matters so much. Press the Shock button above to see a defibrillation. People who survive VF, or who are at high risk of it, are usually offered an implantable cardioverter-defibrillator (ICD), which detects VF and delivers the shock automatically within seconds.</p>
+      <div class="warn">If someone collapses and is not breathing normally, call 911, start chest compressions, and send someone for the nearest AED. You cannot hurt a person in cardiac arrest by using an AED; the device will only shock if it detects a shockable rhythm.</div>
       <h3>On the EKG</h3>
-      <p>The rhythm and rate are normal, but each QRS complex is wide and often notched, and the T wave points the opposite way from the QRS.</p>
-      <button class="btn showbtn" data-show="lbbb">Show this in the animation ↑</button>
+      <p>A completely disorganized, wavy line with no recognizable P waves, QRS complexes, or T waves.</p>
+      <button class="btn showbtn" data-show="vf">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-lqt">
+    <summary>Long QT syndrome and torsades de pointes <span class="tag">Inherited</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>The QT interval on the EKG measures how long the ventricles take to reset after each beat. In long QT syndrome the reset takes too long, because of a fault in the tiny channels that move potassium and sodium in and out of heart cells. Most of the time the heart beats normally. The danger is that an early beat can land while the ventricles are still resetting and set off a fast, twisting form of ventricular tachycardia called torsades de pointes. Torsades often stops on its own after a few seconds, causing a faint, but it can also deteriorate into ventricular fibrillation. The animation shows normal beats with a long QT, followed by a short run of torsades.</p>
+      <h3>Risk factors and causes</h3>
+      <p>Long QT can be inherited, in which case it often first shows itself as fainting during exercise, swimming, emotional stress, or a sudden loud noise, and there may be a family history of fainting or unexplained sudden death at a young age. Far more often it is acquired: caused by medicines, low potassium or magnesium, or a slow heart rate. Many common medicines can prolong the QT, including some antibiotics, antifungals, antinausea medicines, antipsychotics, antidepressants, and methadone. Combining several of these, or taking them with diarrhea or vomiting, raises the risk.</p>
+      <h3>How it is treated</h3>
+      <p>Torsades in progress is treated with intravenous magnesium, correction of potassium, stopping the offending medicine, and sometimes temporary pacing to speed the heart up. A shock is used if the person loses their pulse. For inherited long QT, beta blockers are the main long-term treatment and are very effective. People at highest risk may be offered an ICD. Everyone with long QT should keep a list of medicines to avoid, and a reference list is maintained at crediblemeds.org.</p>
+      <h3>On the EKG</h3>
+      <p>The T wave arrives late, so the distance from the start of the QRS to the end of the T wave is long. Torsades appears as a fast rhythm whose peaks seem to twist around the baseline, growing and shrinking.</p>
+      <button class="btn showbtn" data-show="lqt">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-brugada">
+    <summary>Brugada syndrome <span class="tag">Inherited</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>Brugada syndrome is an inherited condition of the sodium channels in heart cells. Most of the time the heart beats in perfectly normal sinus rhythm and the person feels well. The problem is that a small region of the right ventricle, near its outflow tract, recovers unevenly after each beat, which creates the conditions for ventricular fibrillation to start without warning. This most often happens during sleep or rest, with fever, or after heavy meals or alcohol.</p>
+      <h3>What it means</h3>
+      <p>Brugada syndrome is a cause of sudden cardiac death in young, otherwise healthy people, more often men, and it often runs in families. Many people are found because a relative had an event, or because the pattern is spotted on an EKG done for another reason. Having the EKG pattern does not mean an event will happen; risk is highest in people who have already fainted or been resuscitated.</p>
+      <h3>How it is treated</h3>
+      <p>The most important measures are simple: treat fevers promptly with acetaminophen, avoid heavy alcohol, and avoid a specific list of medicines that block sodium channels, which includes some antiarrhythmics, some antidepressants, and some anesthetics. A current list is kept at brugadadrugs.org. People who have had a cardiac arrest or unexplained fainting are offered an implantable cardioverter-defibrillator (ICD). A medicine called quinidine and, in some centers, ablation of the affected area of the right ventricle can reduce episodes. First-degree relatives are usually offered screening.</p>
+      <h3>On the EKG</h3>
+      <p>The rhythm itself is normal. The clue is in leads V1 and V2, the chest leads that sit over the right ventricle, where the segment after the QRS is elevated in a coved, downsloping shape with an inverted T wave. The animation switches the tracing to lead V1 so you can see this pattern.</p>
+      <button class="btn showbtn" data-show="brugada">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <h2 class="sect">Pacemakers</h2>
+  <p>A pacemaker is a small battery-powered computer, about the size of a large coin, placed under the skin below the collarbone. One or more thin leads run through a vein into the heart. The device watches every beat. When the heart does its job, the pacemaker stays quiet. When a beat is late or missing, the pacemaker sends a tiny electrical pulse through the lead that makes the chamber squeeze. On the EKG each pulse shows up as a thin vertical spike just before the wave it produces. Pacemakers treat slow rhythms; they do not stop fast rhythms. A device that can also deliver shocks for fast rhythms is an ICD.</p>
+
+  <details class="rcard" id="edu-apace">
+    <summary>Atrial pacing <span class="tag">Pacemaker</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>The sinus node has become unreliable (sick sinus syndrome), so a lead in the right atrium takes over its job. Each pacing pulse starts the beat in the atrium, and from there the signal spreads across the atria and travels through the AV node and the normal wiring to the ventricles, exactly as a sinus beat would. Because the rest of the heart's wiring is used, the ventricles squeeze in a fully coordinated way.</p>
+      <h3>When it is used</h3>
+      <p>Atrial pacing is used when the sinus node is slow or pausing but the AV node and the wiring below it are healthy. Most modern devices for this situation also have a ventricular lead as a backup, in case the AV node develops problems later, but they are programmed to let the heart's own conduction do the work whenever possible.</p>
+      <h3>On the EKG</h3>
+      <p>A thin spike, then a P wave, then a normal narrow QRS.</p>
+      <button class="btn showbtn" data-show="apace">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-vpace">
+    <summary>Ventricular pacing <span class="tag">Pacemaker</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>In this example the person has complete heart block: the sinus node works and the atria beat normally, but nothing gets through to the ventricles. A single lead in the right ventricle paces the ventricles at a steady rate. The pacing pulse starts near the tip of the right ventricle and spreads from cell to cell through the muscle, first through the right ventricle and then across to the left, so the QRS on the EKG is wide. The atria continue to beat on their own timetable, unconnected to the ventricles.</p>
+      <h3>When it is used</h3>
+      <p>A single ventricular lead is the simplest solution and is often chosen when the atria are in permanent atrial fibrillation, so there is no organized atrial beat to keep in step with, or when a simple backup is all that is needed. When the atria beat normally, as in this example, a dual chamber pacemaker is usually preferred because it keeps the atria and ventricles working in sequence.</p>
+      <h3>On the EKG</h3>
+      <p>P waves march along on their own. Each spike is followed by a wide QRS.</p>
+      <button class="btn showbtn" data-show="vpace">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-ddd">
+    <summary>Dual chamber pacing <span class="tag">Pacemaker</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>Two leads are used, one in the right atrium and one in the right ventricle. The device paces the atrium, waits a fraction of a second for the atria to squeeze and push blood into the ventricles, and then paces the ventricle. This copies the normal sequence of the heart and keeps the upper and lower chambers working together, which improves how much blood is pumped and how the person feels. In this example both chambers are being paced because the sinus node is unreliable and the AV node is blocked.</p>
+      <h3>How it adapts</h3>
+      <p>A dual chamber pacemaker is constantly listening. If the sinus node produces its own beat on time, the device does not pace the atrium; it simply waits and, if the beat does not get through the AV node, paces the ventricle in step with it. If the heart conducts normally, the device does nothing at all. Most modern pacemakers also have a sensor that raises the paced rate when the person is active.</p>
+      <h3>On the EKG</h3>
+      <p>Two spikes per beat: one before the P wave and one before the wide QRS.</p>
+      <button class="btn showbtn" data-show="ddd">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-crt">
+    <summary>CRT (cardiac resynchronization therapy) <span class="tag">Pacemaker</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>CRT, also called a biventricular pacemaker, is a treatment for heart failure rather than for a slow heart rate. In this example the person has a weak heart and a left bundle branch block, so the left ventricle is activated late and the two ventricles squeeze out of step, which wastes energy. A CRT device has a lead in the right atrium, a lead in the right ventricle, and a third lead threaded through a vein that runs along the outside of the left ventricle. After each atrial beat the device paces both ventricles at the same moment, so they squeeze together again. Compare this animation with the LBBB animation above.</p>
+      <h3>When it is used</h3>
+      <p>CRT is offered to people with heart failure who still have symptoms despite good medicines, whose heart pumps weakly (a low ejection fraction), and whose EKG shows a wide QRS, especially a left bundle branch block. In the right people it improves symptoms, reduces hospital admissions, and helps the heart recover some of its strength. It is often combined with an ICD in one device. Newer approaches pace the heart's own wiring directly (conduction system pacing) to achieve the same goal.</p>
+      <h3>On the EKG</h3>
+      <p>A spike before each QRS, and the QRS is narrower than it was with the bundle branch block.</p>
+      <button class="btn showbtn" data-show="crt">Show this in the animation ↑</button>
     </div>
   </details>
 
@@ -370,7 +632,7 @@ footer a{color:var(--gold)}
 
 <footer>
   <div class="inner">
-    <svg class="lockup" viewBox="0 0 560 180" aria-label="Cardone Medical Consulting, LLC"><path d="M124.56,51.89 A41.8,41.8 0 1 0 124.56,111.01" fill="none" stroke="#faf8f3" stroke-width="7.6" stroke-linecap="round"/><line x1="95.0" y1="41.55" x2="95.0" y2="140.35" stroke="#c1a24a" stroke-width="3.32" stroke-linecap="round"/><path d="M86.45,134.65 C105.45,128.0 105.45,115.65 95.0,107.1 C84.55,98.55 84.55,83.35 95.0,74.8 C105.45,66.25 105.45,52.95 95.0,46.3" fill="none" stroke="#faf8f3" stroke-width="3.32" stroke-linecap="round"/><ellipse cx="96.9" cy="42.5" rx="4.75" ry="3.52" fill="#faf8f3"/><line x1="150" y1="45" x2="150" y2="135" stroke="#c1a24a" stroke-width="1.2"/><text x="172" y="92" font-family="Liberation Serif, Georgia, serif" font-weight="700" font-size="44" letter-spacing="3" fill="#faf8f3">CARDONE</text><text x="172" y="120" font-family="Liberation Serif, Georgia, serif" font-weight="400" font-size="15.5" letter-spacing="4" fill="#c1a24a">MEDICAL CONSULTING, LLC</text></svg>
+    <img class="lockup" src="brand/cardone-horizontal-white.svg" alt="Cardone Medical Consulting">
     <p>BeatMap was created by M. Scott Cardone, MD, a physician board certified in emergency medicine and internal medicine, as a bedside teaching tool for patients.</p>
     <p>The animation and EKG are simplified illustrations and are not a diagnostic tool. For educational use only. © 2026 Cardone Medical Consulting, LLC. All rights reserved.</p>
     <p>Tip: tap Pause at any time to freeze the picture, and use ½ or ¼ speed to follow the signal more easily.</p>
@@ -401,6 +663,8 @@ const PATHS={
   'x-rl':'M140,300 C186,320 222,322 258,312',
   'ap':'M338,166 C343,182 343,198 336,214',
   'ap-up':'M336,214 C343,198 343,182 338,166',
+  'la-ap':'M306,80 C330,100 340,130 338,166',
+  'ap-lv':'M336,214 C330,240 316,262 300,280',
   'lv-ap':'M300,326 C336,302 346,252 336,214',
   'la-av2':'M338,166 C300,150 240,164 208,182',
   'flutter':'M125,78 A42,42 0 1 0 125.01,78',
@@ -411,16 +675,27 @@ const PATHS={
   'eat-la':'M310,100 C330,120 336,142 326,158',
   'eat-ra':'M310,100 C250,58 172,78 128,112',
   'eat-av':'M310,100 C282,122 242,160 208,182',
+  'pac-av':'M300,150 C270,160 240,172 208,182',
+  'pac-ra':'M300,150 C240,120 170,100 120,110',
   'vt-lv':'M305,300 C272,352 232,352 216,300',
   'vt-sept':'M216,300 C206,302 196,302 186,300',
-  'vt-rv':'M186,300 C160,332 124,320 110,270'
+  'vt-rv':'M186,300 C160,332 124,320 110,270',
+  'esc-his':'M200,232 C202,250 204,262 208,272',
+  'pra-av':'M104,104 C130,132 160,162 194,182',
+  'pra-la':'M104,104 C160,60 240,50 306,80 C322,96 332,122 326,144',
+  'prv-up':'M150,330 C120,300 106,250 128,214',
+  'prv-lv':'M150,330 C200,352 262,342 304,282',
+  'plv-spread':'M330,272 C300,326 250,344 216,300'
 };
 const BASE_WIRES=['sa-ra','sa-la','his','rbb','rpurk1','rpurk2','lbb','lpurk1','lpurk2'];
-const SA={x:140,y:62}, AV={x:200,y:184}, EAT_FOCUS={x:310,y:100}, VT_FOCUS={x:305,y:300};
+const SA={x:140,y:62}, AV={x:200,y:184}, HIS={x:200,y:204}, EAT_FOCUS={x:310,y:100}, VT_FOCUS={x:305,y:300}, ESC_FOCUS={x:200,y:232};
+const PAC_FOCUS={x:300,y:150}, PVC_FOCUS={x:290,y:330};
 const AF_FOCI=[{x:318,y:86},{x:340,y:126},{x:298,y:72},{x:330,y:150},{x:100,y:132},{x:160,y:96},{x:132,y:160},{x:82,y:104},{x:250,y:120},{x:286,y:150}];
+const VF_FOCI=[{x:130,y:240},{x:150,y:320},{x:110,y:290},{x:170,y:270},{x:240,y:240},{x:300,y:260},{x:280,y:340},{x:320,y:300},{x:250,y:320},{x:230,y:290}];
+const TIP={ra:{x:104,y:104},rv:{x:150,y:330},lv:{x:330,y:272}};
 
 /* ---------- State ---------- */
-const S={t:0,playing:true,speed:1,rhythm:'sinus',events:[],genUntil:0,gen:null,qrs:[],aux:{}};
+const S={t:0,playing:true,speed:1,rhythm:'sinus',events:[],genUntil:0,qrs:[],aux:{},pending:null,lead:'II'};
 const E=e=>S.events.push(e);
 
 /* ---------- Building blocks ---------- */
@@ -433,6 +708,15 @@ function sinusAtria(t0,pAmp){
   E({k:'P',t:t0+0.05,amp:pAmp==null?0.15:pAmp});
   return t0+0.10;
 }
+function pacedAtria(t0){
+  E({k:'spike',t:t0});E({k:'fire',x:TIP.ra.x,y:TIP.ra.y,t:t0,white:true});
+  E({k:'travel',path:'pra-av',t0:t0,t1:t0+0.11});
+  E({k:'travel',path:'pra-la',t0:t0,t1:t0+0.13});
+  E({k:'beat',ch:'ra',t:t0+0.02,dur:0.22,amt:1});E({k:'beat',ch:'la',t:t0+0.06,dur:0.22,amt:1});
+  E({k:'P',t:t0+0.06,amp:0.13});
+  return t0+0.11;
+}
+function qrsMorph(block){return block==='rbb'?(S.lead==='V1'?'v1rbbb':'rbbb'):block==='lbb'?'lbbb':(S.lead==='V1'?'v1narrow':'narrow');}
 function avAndBelow(tAv,o){
   o=o||{};
   const d=(o.delay==null)?0.06:o.delay;
@@ -453,28 +737,111 @@ function avAndBelow(tAv,o){
     E({k:'travel',path:'lpurk2',t0:tP,t1:tP+0.05});
     E({k:'beat',ch:'lv',t:tB+0.03,dur:0.34,amt:1});
   }
-  if(block==='rbb'){
-    E({k:'travel',path:'x-lr',t0:tP+0.02,t1:tP+0.15,slow:true});
-    E({k:'beat',ch:'rv',t:tP+0.09,dur:0.32,amt:1});
-  }
-  if(block==='lbb'){
-    E({k:'travel',path:'x-rl',t0:tP+0.02,t1:tP+0.15,slow:true});
-    E({k:'beat',ch:'lv',t:tP+0.09,dur:0.34,amt:1});
-  }
-  const morph=block==='rbb'?'rbbb':block==='lbb'?'lbbb':'narrow';
+  if(block==='rbb'){E({k:'travel',path:'x-lr',t0:tP+0.02,t1:tP+0.15});E({k:'beat',ch:'rv',t:tP+0.09,dur:0.32,amt:1});}
+  if(block==='lbb'){E({k:'travel',path:'x-rl',t0:tP+0.02,t1:tP+0.15});E({k:'beat',ch:'lv',t:tP+0.09,dur:0.34,amt:1});}
+  const morph=o.morph||qrsMorph(block);
   E({k:'QRS',t:tQ,morph:morph});S.qrs.push(tQ);
-  E({k:'T',t:tQ+(morph==='narrow'?0.30:0.36),amp:morph==='lbbb'?-0.28:0.3,w:0.05});
+  const wide=(morph!=='narrow'&&morph!=='v1narrow');
+  const tT=o.tT!=null?tQ+o.tT:tQ+(wide?0.36:0.30);
+  E({k:'T',t:tT,amp:o.tAmp!=null?o.tAmp:(morph==='lbbb'||morph==='v1rbbb'||morph==='brugada'?-0.28:0.3),w:o.tW||0.05});
   return tQ;
 }
+function pacedVentricles(t0,o){ // RV apex pacing (o.biv adds the LV lead)
+  o=o||{};
+  E({k:'spike',t:t0});E({k:'fire',x:TIP.rv.x,y:TIP.rv.y,t:t0,white:true});
+  E({k:'travel',path:'prv-up',t0:t0,t1:t0+0.10});
+  E({k:'beat',ch:'rv',t:t0+0.02,dur:0.32,amt:1});
+  if(o.biv){
+    E({k:'fire',x:TIP.lv.x,y:TIP.lv.y,t:t0,white:true});
+    E({k:'travel',path:'plv-spread',t0:t0,t1:t0+0.10});
+    E({k:'beat',ch:'lv',t:t0+0.02,dur:0.34,amt:1});
+    E({k:'QRS',t:t0+0.005,morph:'crt'});S.qrs.push(t0);
+    E({k:'T',t:t0+0.34,amp:-0.22,w:0.05});
+  }else{
+    E({k:'travel',path:'prv-lv',t0:t0+0.04,t1:t0+0.18});
+    E({k:'beat',ch:'lv',t:t0+0.12,dur:0.34,amt:1});
+    E({k:'QRS',t:t0+0.005,morph:'paced'});S.qrs.push(t0);
+    E({k:'T',t:t0+0.38,amp:-0.3,w:0.06});
+  }
+}
+function blockedP(tAv,where){E({k:'fire',x:where.x,y:where.y,t:tAv+0.02,red:true,small:true,block:true});}
+function ventricularBeat(t0,focus){
+  E({k:'fire',x:focus.x,y:focus.y,t:t0,red:true});
+  E({k:'travel',path:'vt-lv',t0:t0,t1:t0+0.10,red:true});
+  E({k:'travel',path:'vt-sept',t0:t0+0.10,t1:t0+0.14,red:true});
+  E({k:'travel',path:'vt-rv',t0:t0+0.14,t1:t0+0.24,red:true});
+  E({k:'beat',ch:'lv',t:t0+0.02,dur:0.30,amt:0.85});E({k:'beat',ch:'rv',t:t0+0.14,dur:0.30,amt:0.85});
+  E({k:'QRS',t:t0,morph:'vt'});S.qrs.push(t0);
+  E({k:'T',t:t0+0.30,amp:-0.35,w:0.05});
+}
+function sinusCycle(t0,o){o=o||{};const tAv=sinusAtria(t0,o.pAmp);avAndBelow(tAv,o);return tAv;}
 
-/* ---------- Rhythm generators: each takes cycle start, pushes events, returns next cycle start ---------- */
+/* ---------- Rhythm generators: each takes a cycle start, pushes events, returns the next cycle start ---------- */
+const jit=()=>(Math.random()-0.5)*0.05;
 const GEN={
-  sinus:t0=>{avAndBelow(sinusAtria(t0));return t0+0.84+(Math.random()-0.5)*0.05;},
-  rbbb:t0=>{avAndBelow(sinusAtria(t0),{block:'rbb'});return t0+0.84+(Math.random()-0.5)*0.05;},
-  lbbb:t0=>{avAndBelow(sinusAtria(t0),{block:'lbb'});return t0+0.84+(Math.random()-0.5)*0.05;},
+  sinus:t0=>{sinusCycle(t0);return t0+0.84+jit();},
+  rbbb:t0=>{sinusCycle(t0,{block:'rbb'});return t0+0.84+jit();},
+  lbbb:t0=>{sinusCycle(t0,{block:'lbb'});return t0+0.84+jit();},
+  brugada:t0=>{sinusCycle(t0,{morph:'brugada',tT:0.30,tAmp:-0.25,tW:0.06});return t0+0.84+jit();},
+  sss:t0=>{
+    const n=(S.aux.n=(S.aux.n||0)+1);
+    sinusCycle(t0);
+    if(n%5===0){E({k:'fire',x:SA.x,y:SA.y,t:t0+1.5,red:true,small:true,block:true});E({k:'fire',x:SA.x,y:SA.y,t:t0+2.4,red:true,small:true,block:true});return t0+1.43+2.6;}
+    return t0+1.43+jit();
+  },
+  avb1:t0=>{sinusCycle(t0,{delay:0.20});return t0+0.86+jit();},
+  wenck:t0=>{
+    const n=(S.aux.n=(S.aux.n||0)+1),ph=n%4;
+    const tAv=sinusAtria(t0);
+    if(ph===0)blockedP(tAv,AV);else avAndBelow(tAv,{delay:[0.06,0.16,0.26][ph-1]});
+    return t0+0.86;
+  },
+  mobitz2:t0=>{
+    const n=(S.aux.n=(S.aux.n||0)+1);
+    const tAv=sinusAtria(t0);
+    if(n%3===0){E({k:'hold',t0:tAv,t1:tAv+0.06});blockedP(tAv+0.06,HIS);}else avAndBelow(tAv,{delay:0.06});
+    return t0+0.86;
+  },
+  chb:t0=>{
+    if(S.aux.aNext==null)S.aux.aNext=t0;
+    const tEnd=t0+1.65;
+    while(S.aux.aNext<tEnd){const s=S.aux.aNext;const tAv=sinusAtria(s,0.12);blockedP(tAv,AV);S.aux.aNext+=0.8;}
+    E({k:'fire',x:ESC_FOCUS.x,y:ESC_FOCUS.y,t:t0,red:true});
+    E({k:'travel',path:'esc-his',t0:t0,t1:t0+0.04,red:true});
+    E({k:'travel',path:'lbb',t0:t0+0.02,t1:t0+0.10,red:true});E({k:'travel',path:'rbb',t0:t0+0.02,t1:t0+0.10,red:true});
+    E({k:'travel',path:'lpurk1',t0:t0+0.10,t1:t0+0.16,red:true});E({k:'travel',path:'lpurk2',t0:t0+0.10,t1:t0+0.16,red:true});
+    E({k:'travel',path:'rpurk1',t0:t0+0.10,t1:t0+0.16,red:true});E({k:'travel',path:'rpurk2',t0:t0+0.10,t1:t0+0.16,red:true});
+    E({k:'beat',ch:'rv',t:t0+0.06,dur:0.34,amt:0.9});E({k:'beat',ch:'lv',t:t0+0.06,dur:0.36,amt:0.9});
+    E({k:'QRS',t:t0+0.03,morph:'escape'});S.qrs.push(t0+0.03);E({k:'T',t:t0+0.40,amp:0.28,w:0.06});
+    return tEnd;
+  },
+  pac:t0=>{
+    const n=(S.aux.n=(S.aux.n||0)+1);
+    sinusCycle(t0);
+    if(n%4===0){
+      const te=t0+0.50;
+      E({k:'fire',x:PAC_FOCUS.x,y:PAC_FOCUS.y,t:te,red:true});
+      E({k:'travel',path:'pac-av',t0:te,t1:te+0.10,red:true});E({k:'travel',path:'pac-ra',t0:te,t1:te+0.12,red:true});
+      E({k:'beat',ch:'la',t:te+0.02,dur:0.2,amt:1});E({k:'beat',ch:'ra',t:te+0.06,dur:0.2,amt:1});
+      E({k:'P',t:te+0.05,amp:-0.10});
+      avAndBelow(te+0.10,{delay:0.06});
+      return te+1.05;
+    }
+    return t0+0.85;
+  },
+  pvc:t0=>{
+    const n=(S.aux.n=(S.aux.n||0)+1);
+    sinusCycle(t0);
+    if(n%4===0){
+      ventricularBeat(t0+0.46,PVC_FOCUS);
+      const tAv=sinusAtria(t0+0.85,0.10);blockedP(tAv,AV);
+      return t0+1.70;
+    }
+    return t0+0.85;
+  },
   afib:t0=>{
     const rr=0.42+Math.random()*0.66;
-    E({k:'quiver',t0:t0,t1:t0+rr});E({k:'fibb',t0:t0,t1:t0+rr});
+    E({k:'quiver',ch:'a',t0:t0,t1:t0+rr});E({k:'fibb',t0:t0,t1:t0+rr});
     const n=3+Math.floor(Math.random()*3);
     for(let i=0;i<n;i++){const p=AF_FOCI[Math.floor(Math.random()*AF_FOCI.length)];E({k:'fire',x:p.x,y:p.y,t:t0+Math.random()*rr,red:true,small:true});}
     avAndBelow(t0,{delay:0.03});
@@ -487,7 +854,7 @@ const GEN={
     E({k:'beat',ch:'ra',t:t0+0.04,dur:0.16,amt:0.45});
     E({k:'beat',ch:'la',t:t0+0.09,dur:0.16,amt:0.3});
     E({k:'travel',path:'flut-av',t0:t0+0.09,t1:t0+0.15});
-    if(n%2===0)avAndBelow(t0+0.15,{delay:0.04});else E({k:'fire',x:AV.x,y:AV.y,t:t0+0.15,red:true,small:true,block:true});
+    if(n%2===0)avAndBelow(t0+0.15,{delay:0.04});else blockedP(t0+0.13,AV);
     return t0+0.2;
   },
   eat:t0=>{
@@ -501,7 +868,7 @@ const GEN={
     return t0+0.40;
   },
   avrt:t0=>{
-    const tQ=avAndBelow(t0,{delay:0.03});
+    avAndBelow(t0,{delay:0.03});
     E({k:'travel',path:'lv-ap',t0:t0+0.15,t1:t0+0.25,red:true});
     E({k:'travel',path:'ap-up',t0:t0+0.25,t1:t0+0.29,red:true});
     E({k:'beat',ch:'la',t:t0+0.28,dur:0.16,amt:0.8});E({k:'beat',ch:'ra',t:t0+0.31,dur:0.16,amt:0.8});
@@ -518,53 +885,140 @@ const GEN={
     E({k:'P',t:t0+0.11,amp:-0.05});
     return t0+0.35;
   },
+  wpw:t0=>{
+    const tAv=sinusAtria(t0);
+    E({k:'travel',path:'la-ap',t0:t0+0.04,t1:t0+0.10,red:true});
+    E({k:'travel',path:'ap',t0:t0+0.10,t1:t0+0.13,red:true});
+    E({k:'travel',path:'ap-lv',t0:t0+0.13,t1:t0+0.22,red:true});
+    E({k:'beat',ch:'lv',t:t0+0.13,dur:0.14,amt:0.35});
+    avAndBelow(tAv,{delay:0.06,morph:'wpw'});
+    return t0+0.84+jit();
+  },
   vt:t0=>{
-    E({k:'fire',x:VT_FOCUS.x,y:VT_FOCUS.y,t:t0,red:true});
-    E({k:'travel',path:'vt-lv',t0:t0,t1:t0+0.10,red:true,slow:true});
-    E({k:'travel',path:'vt-sept',t0:t0+0.10,t1:t0+0.14,red:true,slow:true});
-    E({k:'travel',path:'vt-rv',t0:t0+0.14,t1:t0+0.24,red:true,slow:true});
-    E({k:'beat',ch:'lv',t:t0+0.02,dur:0.30,amt:0.85});E({k:'beat',ch:'rv',t:t0+0.14,dur:0.30,amt:0.85});
-    E({k:'QRS',t:t0,morph:'vt'});S.qrs.push(t0);
-    E({k:'T',t:t0+0.30,amp:-0.35,w:0.05});
+    ventricularBeat(t0,VT_FOCUS);
     if(S.aux.sinusNext==null)S.aux.sinusNext=t0+0.2;
-    while(S.aux.sinusNext<t0+0.37){const s=S.aux.sinusNext;sinusAtria(s,0.07);E({k:'fire',x:AV.x,y:AV.y,t:s+0.10,red:true,small:true,block:true});S.aux.sinusNext+=0.86;}
+    while(S.aux.sinusNext<t0+0.37){const s=S.aux.sinusNext;const tAv=sinusAtria(s,0.07);blockedP(tAv,AV);S.aux.sinusNext+=0.86;}
     return t0+0.37;
-  }
+  },
+  vf:t0=>{
+    const len=0.5;
+    E({k:'quiver',ch:'v',t0:t0,t1:t0+len});E({k:'vfib',t0:t0,t1:t0+len});
+    for(let i=0;i<5;i++){const p=VF_FOCI[Math.floor(Math.random()*VF_FOCI.length)];E({k:'fire',x:p.x,y:p.y,t:t0+Math.random()*len,red:true,small:true});}
+    if(S.aux.sinusNext==null)S.aux.sinusNext=t0+0.3;
+    while(S.aux.sinusNext<t0+len){const s=S.aux.sinusNext;const tAv=sinusAtria(s,0.06);blockedP(tAv,AV);S.aux.sinusNext+=0.86;}
+    return t0+len;
+  },
+  lqt:t0=>{
+    const n=(S.aux.n=(S.aux.n||0)+1);
+    sinusCycle(t0,{tT:0.50,tW:0.07});
+    if(n%8===0){
+      const ts=t0+0.66,len=3.0;
+      E({k:'fire',x:PVC_FOCUS.x,y:PVC_FOCUS.y,t:ts,red:true});
+      E({k:'tdp',t0:ts,t1:ts+len});
+      for(let tt=ts;tt<ts+len;tt+=0.24){E({k:'beat',ch:'lv',t:tt,dur:0.2,amt:0.7});E({k:'beat',ch:'rv',t:tt+0.08,dur:0.2,amt:0.7});
+        const p=VF_FOCI[Math.floor(Math.random()*VF_FOCI.length)];E({k:'fire',x:p.x,y:p.y,t:tt,red:true,small:true});}
+      return ts+len+0.9;
+    }
+    return t0+0.92;
+  },
+  apace:t0=>{avAndBelow(pacedAtria(t0),{delay:0.06});return t0+0.857;},
+  vpace:t0=>{
+    if(S.aux.aNext==null)S.aux.aNext=t0+0.3;
+    const tEnd=t0+0.857;
+    while(S.aux.aNext<tEnd){const s=S.aux.aNext;const tAv=sinusAtria(s,0.12);blockedP(tAv,AV);S.aux.aNext+=0.8;}
+    pacedVentricles(t0);
+    return tEnd;
+  },
+  ddd:t0=>{pacedAtria(t0);blockedP(t0+0.11,AV);pacedVentricles(t0+0.18);return t0+0.857;},
+  crt:t0=>{const tAv=sinusAtria(t0);E({k:'hold',t0:tAv,t1:tAv+0.06});pacedVentricles(tAv+0.07,{biv:true});return t0+0.86+jit();}
 };
 
 /* ---------- Rhythm catalogue ---------- */
+const SINUS_OK='<strong class="ok">The sinus node is in charge.</strong> ';
 const R={
-  sinus:{name:'Normal sinus rhythm',chip:'Sinus rhythm',group:'rhythm',reg:'regular',
-    origin:'<strong style="color:#8a6f1f">The sinus node is in charge.</strong> Every beat starts there, spreads across the atria, pauses at the AV node, and then races down the bundle branches so both ventricles squeeze together.',
-    marks:[{type:'label',x:140,y:30,text:'Beat starts here',gold:true}]},
-  afib:{name:'Atrial fibrillation',chip:'Atrial fibrillation',group:'rhythm',reg:'irregular',
+  sinus:{name:'Normal sinus rhythm',chip:'Sinus rhythm',group:'normal',reg:'regular',sa:true,
+    origin:SINUS_OK+'Every beat starts there, spreads across the atria, pauses at the AV node, and then races down the bundle branches so both ventricles squeeze together.',
+    marks:[{type:'label',x:140,y:30,text:'Beat starts here',teal:true}]},
+  sss:{name:'Slow sinus rhythm with pauses (sick sinus)',chip:'Slow sinus / sick sinus',group:'normal',reg:'slow, with pauses',sa:true,
+    origin:'<strong class="ok">The sinus node is in charge but unreliable.</strong> It fires slowly and sometimes stops for a few seconds, so there are pauses with no heartbeat at all.',
+    marks:[{type:'focus',x:SA.x,y:SA.y,r:10,hollow:true},{type:'label',x:140,y:30,text:'Tired pacemaker: slow, with pauses',red:true}]},
+  rbbb:{name:'Sinus rhythm with right bundle branch block',chip:'Right BBB',group:'normal',reg:'regular',sa:true,lead:'V1',
+    origin:SINUS_OK+'The rate is normal, but the <strong>right bundle branch is blocked</strong>. The right ventricle is activated late, through muscle, from the left side.',
+    marks:[{type:'block',x:195,y:270},{type:'label',x:180,y:262,text:'Blocked',anchor:'end',red:true}]},
+  lbbb:{name:'Sinus rhythm with left bundle branch block',chip:'Left BBB',group:'normal',reg:'regular',sa:true,
+    origin:SINUS_OK+'The rate is normal, but the <strong>left bundle branch is blocked</strong>. The left ventricle is activated late, through muscle, from the right side.',
+    marks:[{type:'block',x:208,y:258},{type:'label',x:224,y:250,text:'Blocked',red:true}]},
+
+  avb1:{name:'First-degree AV block',chip:'1st degree block',group:'block',reg:'regular',sa:true,
+    origin:SINUS_OK+'Every signal gets through, but the <strong>AV node holds each one longer than normal</strong>. Watch the AV node glow for longer before the ventricles fire.',
+    marks:[{type:'focus',x:AV.x,y:AV.y,r:10,hollow:true},{type:'label',x:236,y:158,text:'Slow doorway'}]},
+  wenck:{name:'Second-degree AV block, type 1 (Wenckebach)',chip:'2nd degree, type 1',group:'block',reg:'grouped beats',sa:true,
+    origin:SINUS_OK+'The <strong>AV node gets more tired with each beat</strong>, holding the signal longer and longer until one is dropped. Then it recovers and the pattern repeats.',
+    marks:[{type:'focus',x:AV.x,y:AV.y,r:10,hollow:true},{type:'label',x:236,y:158,text:'Tiring doorway, drops a beat'}]},
+  mobitz2:{name:'Second-degree AV block, type 2 (Mobitz II)',chip:'2nd degree, type 2',group:'block',reg:'dropped beats',sa:true,
+    origin:SINUS_OK+'Signals pass normally, then <strong>one is suddenly dropped in the wiring below the AV node</strong> with no warning. This can progress to complete block.',
+    marks:[{type:'block',x:200,y:204},{type:'label',x:222,y:232,text:'Unreliable wiring',red:true}]},
+  chb:{name:'Third-degree (complete) heart block',chip:'Complete heart block',group:'block',reg:'slow, atria separate',sa:true,
+    origin:'<strong class="ok">The sinus node still drives the atria</strong>, but <strong>nothing gets through the AV node</strong>. A slow backup pacemaker below the block drives the ventricles on its own, out of step with the atria.',
+    marks:[{type:'block',x:200,y:184},{type:'focus',x:ESC_FOCUS.x,y:ESC_FOCUS.y,r:6},{type:'label',x:222,y:236,text:'Slow backup pacemaker',red:true}]},
+
+  pac:{name:'Sinus rhythm with premature atrial contractions',chip:'PACs (early atrial beats)',group:'extra',reg:'occasional early beat',sa:true,
+    origin:SINUS_OK+'Every fourth beat, <strong>a spot in the left atrium fires early</strong>. The early beat conducts normally, then there is a short pause before the sinus node resumes.',
+    marks:[{type:'focus',x:PAC_FOCUS.x,y:PAC_FOCUS.y,r:6},{type:'label',x:300,y:30,text:'Early beat from here'}]},
+  pvc:{name:'Sinus rhythm with premature ventricular contractions',chip:'PVCs (early ventricular beats)',group:'extra',reg:'occasional early beat',sa:true,
+    origin:SINUS_OK+'Every fourth beat, <strong>a spot in the ventricle fires early</strong>. The ventricles squeeze out of sync, the next sinus signal is blocked, and a longer pause follows, which is the "skipped beat" people feel.',
+    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6},{type:'label',x:292,y:368,text:'Early beat from here'}]},
+
+  afib:{name:'Atrial fibrillation',chip:'Atrial fibrillation',group:'atrial',reg:'irregular',tx:['shock'],
     origin:'<strong>Many rogue spots in the atria fire chaotically.</strong> The atria quiver instead of squeezing. The AV node lets signals through at random, so the ventricles beat irregularly.',
     marks:AF_FOCI.slice(0,6).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:278,y:30,text:'Rogue signals from many spots'}])},
-  flutter:{name:'Atrial flutter',chip:'Atrial flutter',group:'rhythm',reg:'regular, 2:1',
+  flutter:{name:'Atrial flutter',chip:'Atrial flutter',group:'atrial',reg:'regular, 2:1',tx:['shock'],
     origin:'<strong>One signal is caught in a loop</strong> circling the right atrium about 300 times a minute. The AV node lets every second lap through, so the ventricles beat at about 150.',
     wires:['flutter'],marks:[{type:'label',x:150,y:30,text:'Signal loops around the right atrium'}]},
-  eat:{name:'Ectopic atrial tachycardia',chip:'Ectopic atrial tach',group:'rhythm',reg:'regular',
+  eat:{name:'Ectopic atrial tachycardia',chip:'Ectopic atrial tach',group:'atrial',reg:'regular',
     origin:'<strong>A rogue cluster of cells in the atrium</strong> fires faster than the sinus node and takes over. Each signal still passes through the AV node to the ventricles.',
     marks:[{type:'focus',x:EAT_FOCUS.x,y:EAT_FOCUS.y,r:7},{type:'label',x:296,y:30,text:'Rogue pacemaker'}]},
-  avrt:{name:'AVRT (extra pathway)',chip:'AVRT (extra pathway)',group:'rhythm',reg:'regular',
-    origin:'<strong>An extra pathway connects the atrium and ventricle.</strong> The signal goes down through the AV node and races back up the extra pathway, looping around and around.',
-    wires:['ap'],marks:[{type:'label',x:350,y:154,text:'Extra pathway',anchor:'end'}]},
-  avnrt:{name:'AVNRT (loop in the AV node)',chip:'AVNRT (AV node loop)',group:'rhythm',reg:'regular',
+
+  avnrt:{name:'AVNRT (loop in the AV node)',chip:'AVNRT (AV node loop)',group:'svt',reg:'regular',tx:['aden'],
     origin:'<strong>The signal is spinning in a tiny loop inside the AV node.</strong> With every lap it sends a signal down to the ventricles and up to the atria at the same time.',
     wires:['avnrt'],marks:[{type:'focus',x:AV.x,y:AV.y,r:9,hollow:true},{type:'label',x:236,y:158,text:'Loop inside AV node'}]},
-  vt:{name:'Ventricular tachycardia',chip:'Ventricular tach (VT)',group:'rhythm',reg:'regular',
+  avrt:{name:'AVRT (loop using an extra pathway)',chip:'AVRT (extra pathway)',group:'svt',reg:'regular',tx:['aden'],
+    origin:'<strong>An extra pathway connects the atrium and ventricle.</strong> The signal goes down through the AV node and races back up the extra pathway, looping around and around.',
+    wires:['ap'],marks:[{type:'label',x:350,y:154,text:'Extra pathway',anchor:'end'}]},
+  wpw:{name:'Sinus rhythm with WPW (pre-excitation)',chip:'WPW pattern',group:'svt',reg:'regular',sa:true,
+    origin:SINUS_OK+'The rate is normal, but each signal also takes a <strong>shortcut through an extra pathway</strong> with no delay, so part of the left ventricle fires a fraction early (the delta wave).',
+    wires:['ap'],marks:[{type:'label',x:350,y:154,text:'Extra pathway (shortcut)',anchor:'end'}]},
+
+  vt:{name:'Ventricular tachycardia',chip:'Ventricular tach (VT)',group:'vent',reg:'regular',tx:['shock'],
     origin:'<strong>A rogue spot in the ventricle muscle</strong> fires fast. The signal spreads slowly from cell to cell instead of using the fast wiring, so the ventricles squeeze poorly. The atria keep beating on their own in the background.',
     marks:[{type:'focus',x:VT_FOCUS.x,y:VT_FOCUS.y,r:7},{type:'label',x:292,y:368,text:'Rogue signal from scar',anchor:'middle'}]},
-  rbbb:{name:'Sinus rhythm with right bundle branch block',chip:'Sinus + right BBB',group:'bbb',reg:'regular',
-    origin:'<strong style="color:#8a6f1f">The sinus node is in charge</strong> and the rate is normal, but the <strong>right bundle branch is blocked</strong>. The right ventricle is activated late, through muscle, from the left side.',
-    marks:[{type:'block',x:195,y:270},{type:'label',x:180,y:262,text:'Blocked',anchor:'end',red:true}]},
-  lbbb:{name:'Sinus rhythm with left bundle branch block',chip:'Sinus + left BBB',group:'bbb',reg:'regular',
-    origin:'<strong style="color:#8a6f1f">The sinus node is in charge</strong> and the rate is normal, but the <strong>left bundle branch is blocked</strong>. The left ventricle is activated late, through muscle, from the right side.',
-    marks:[{type:'block',x:208,y:258},{type:'label',x:224,y:250,text:'Blocked',red:true}]}
+  vf:{name:'Ventricular fibrillation (cardiac arrest)',chip:'Ventricular fib (VF)',group:'vent',reg:'no effective heartbeat',tx:['shock'],noRate:true,
+    origin:'<strong>Countless spots in the ventricles fire chaotically.</strong> The ventricles quiver and pump no blood at all. This is cardiac arrest. The only treatment is a shock.',
+    marks:VF_FOCI.slice(0,6).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:368,text:'Chaos in the ventricles: no pumping',red:true}])},
+  lqt:{name:'Long QT syndrome with a run of torsades',chip:'Long QT / torsades',group:'vent',reg:'regular, then a burst',sa:true,
+    origin:SINUS_OK+'The rhythm is normal but the <strong>ventricles take too long to reset</strong> (long QT). An early beat lands during the reset and sets off a short, twisting run of fast ventricular rhythm (torsades).',
+    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6},{type:'label',x:284,y:368,text:'Early beat sets off torsades'}]},
+  brugada:{name:'Brugada syndrome (sinus rhythm)',chip:'Brugada syndrome',group:'vent',reg:'regular',sa:true,lead:'V1',
+    origin:SINUS_OK+'The rhythm is normal. The problem is a <strong>vulnerable patch in the right ventricle</strong> that recovers unevenly and can set off ventricular fibrillation, most often during sleep or fever. Lead V1 shows the telltale pattern.',
+    marks:[{type:'zone',x:168,y:214,rx:26,ry:15},{type:'label',x:172,y:248,text:'Vulnerable area',red:true}]},
+
+  apace:{name:'Atrial pacing (for sick sinus syndrome)',chip:'Atrial pacing',group:'pace',reg:'regular, paced',
+    origin:'<strong class="ok">A pacemaker lead in the right atrium has taken over from the tired sinus node.</strong> Each pulse starts the beat in the atrium, and the signal then follows the normal wiring to the ventricles.',
+    device:['ra'],marks:[{type:'label',x:200,y:30,text:'Sinus node too slow, so the lead paces the atrium'}]},
+  vpace:{name:'Ventricular pacing (for complete heart block)',chip:'Ventricular pacing',group:'pace',reg:'regular, paced',sa:true,
+    origin:'<strong class="ok">A lead in the right ventricle paces the ventricles</strong> because nothing gets through the blocked AV node. The atria keep beating on their own, out of step. The paced beat spreads through muscle, so the QRS is wide.',
+    device:['rv'],marks:[{type:'block',x:200,y:184},{type:'label',x:200,y:30,text:'A lead in the right ventricle paces the ventricles'}]},
+  ddd:{name:'Dual chamber pacing',chip:'Dual chamber pacing',group:'pace',reg:'regular, paced',
+    origin:'<strong class="ok">Two leads work in sequence.</strong> The atrial lead paces the atria, the device waits a fraction of a second for them to squeeze, and then the ventricular lead paces the ventricles, restoring the normal order.',
+    device:['ra','rv'],marks:[{type:'block',x:200,y:184},{type:'label',x:200,y:30,text:'Atrial lead paces first, then the ventricular lead'}]},
+  crt:{name:'CRT: biventricular pacing for heart failure with LBBB',chip:'CRT (biventricular)',group:'pace',reg:'regular, paced',sa:true,
+    origin:'<strong class="ok">The sinus node is in charge</strong>, and after each atrial beat the device <strong>paces both ventricles at the same moment</strong> through a right ventricular lead and a lead on the outside of the left ventricle, so they squeeze together despite the bundle branch block.',
+    device:['ra','rv','lv'],marks:[{type:'block',x:208,y:258},{type:'label',x:200,y:30,text:'Both ventricles paced at the same moment'}]}
 };
+const GROUPS=[['normal','Normal rhythm and wiring'],['block','Heart block'],['extra','Extra beats'],['atrial','From the atria'],['svt','Fast loops (SVT)'],['vent','Ventricles and inherited'],['pace','Pacemakers']];
 
 /* ---------- SVG setup ---------- */
-const svg=$('#heart'),gWires=$('#wires'),gTrails=$('#trails'),gDots=$('#dots'),gRip=$('#ripples'),gMarks=$('#marks');
+const gWires=$('#wires'),gTrails=$('#trails'),gDots=$('#dots'),gRip=$('#ripples'),gMarks=$('#marks'),gDev=$('#device');
 const wireEl={},trailEl={},dotEl={},pathLen={};
 for(const id in PATHS){
   const w=el('path',{d:PATHS[id],class:'wire'});w.style.display='none';gWires.appendChild(w);wireEl[id]=w;
@@ -572,14 +1026,21 @@ for(const id in PATHS){
   pathLen[id]=tr.getTotalLength();
   const d=el('circle',{r:5,class:'dot'});gDots.appendChild(d);dotEl[id]=d;
 }
-const ripPool=[];for(let i=0;i<18;i++){const c=el('circle',{class:'ripple',r:6});gRip.appendChild(c);ripPool.push(c);}
+const ripPool=[];for(let i=0;i<22;i++){const c=el('circle',{class:'ripple',r:6});gRip.appendChild(c);ripPool.push(c);}
 const CH={};['ra','la','rv','lv'].forEach(id=>{const p=$('#ch-'+id);CH[id]={el:p,cx:+p.dataset.cx,cy:+p.dataset.cy,base:id[1]==='a'?[242,205,196]:[230,182,171]};});
 const ACTIVE=[207,74,61];
 const mix=(a,b,p)=>`rgb(${Math.round(a[0]+(b[0]-a[0])*p)},${Math.round(a[1]+(b[1]-a[1])*p)},${Math.round(a[2]+(b[2]-a[2])*p)})`;
+const LEADS={ra:'M74,38 C92,40 100,72 104,104',rv:'M74,40 C82,130 112,262 150,330',lv:'M74,34 C170,6 344,30 350,196 C352,236 342,258 330,272'};
 
 function buildMarks(cfg){
-  gMarks.innerHTML='';
+  gMarks.innerHTML='';gDev.innerHTML='';
   for(const id in wireEl){wireEl[id].style.display=(BASE_WIRES.indexOf(id)>=0||(cfg.wires||[]).indexOf(id)>=0)?'':'none';wireEl[id].classList.toggle('alt',(cfg.wires||[]).indexOf(id)>=0);}
+  if(cfg.device){
+    cfg.device.forEach(l=>{gDev.appendChild(el('path',{d:LEADS[l],class:'pm-lead'}));});
+    gDev.appendChild(el('rect',{x:36,y:24,width:38,height:24,rx:7,class:'pm-box'}));
+    const t=el('text',{x:55,y:40,class:'pm-txt','text-anchor':'middle'});t.textContent='PACER';gDev.appendChild(t);
+    cfg.device.forEach(l=>{gDev.appendChild(el('circle',{cx:TIP[l].x,cy:TIP[l].y,r:4.5,class:'pm-tip'}));});
+  }
   (cfg.marks||[]).forEach(m=>{
     if(m.type==='focus'){
       const grp=el('g',{});
@@ -589,8 +1050,10 @@ function buildMarks(cfg){
     }else if(m.type==='block'){
       const s=7;gMarks.appendChild(el('line',{class:'blockx',x1:m.x-s,y1:m.y-s,x2:m.x+s,y2:m.y+s}));gMarks.appendChild(el('line',{class:'blockx',x1:m.x+s,y1:m.y-s,x2:m.x-s,y2:m.y+s}));
       gMarks.appendChild(el('circle',{cx:m.x,cy:m.y,r:s+5,fill:'none',stroke:'#c8402f','stroke-width':2}));
+    }else if(m.type==='zone'){
+      gMarks.appendChild(el('ellipse',{class:'zone',cx:m.x,cy:m.y,rx:m.rx,ry:m.ry}));
     }else if(m.type==='label'){
-      const t=el('text',{class:'lab'+(m.red?' red':'')+(m.gold?' ':''),x:m.x,y:m.y,'text-anchor':m.anchor||'middle'});if(m.gold)t.style.fill='#8a6f1f';t.textContent=m.text;gMarks.appendChild(t);
+      const t=el('text',{class:'lab'+(m.red?' red':'')+(m.teal?' teal':''),x:m.x,y:m.y,'text-anchor':m.anchor||'middle'});t.textContent=m.text;gMarks.appendChild(t);
     }
   });
 }
@@ -600,17 +1063,28 @@ const QRS={
   narrow:dt=>-0.12*g(dt,0.012,0.006)+1.15*g(dt,0.036,0.009)-0.3*g(dt,0.06,0.008),
   rbbb:dt=>-0.1*g(dt,0.012,0.006)+0.95*g(dt,0.036,0.010)-0.2*g(dt,0.06,0.008)-0.5*g(dt,0.105,0.022),
   lbbb:dt=>0.7*g(dt,0.04,0.018)+0.8*g(dt,0.1,0.02)-0.15*g(dt,0.15,0.012),
-  vt:dt=>1.0*g(dt,0.05,0.024)-0.85*g(dt,0.125,0.03)
+  vt:dt=>1.0*g(dt,0.05,0.024)-0.85*g(dt,0.125,0.03),
+  escape:dt=>-0.1*g(dt,0.012,0.008)+1.0*g(dt,0.045,0.014)-0.35*g(dt,0.085,0.014),
+  wpw:dt=>0.30*g(dt,0.035,0.024)+1.05*g(dt,0.075,0.011)-0.25*g(dt,0.10,0.009),
+  paced:dt=>0.55*g(dt,0.045,0.02)+0.75*g(dt,0.105,0.022)-0.2*g(dt,0.16,0.012),
+  crt:dt=>-0.1*g(dt,0.015,0.006)+1.0*g(dt,0.05,0.016)-0.3*g(dt,0.09,0.012),
+  v1narrow:dt=>0.25*g(dt,0.02,0.008)-0.85*g(dt,0.045,0.011),
+  v1rbbb:dt=>0.3*g(dt,0.02,0.008)-0.45*g(dt,0.045,0.01)+0.85*g(dt,0.10,0.02),
+  brugada:dt=>0.25*g(dt,0.02,0.008)-0.2*g(dt,0.04,0.008)+0.6*g(dt,0.085,0.028)+0.32*g(dt,0.17,0.06)
 };
 function ecgValue(t){
   let v=0;
   for(let i=0;i<S.events.length;i++){const e=S.events[i];
     switch(e.k){
       case 'P':{const d=t-e.t;if(d>-0.09&&d<0.09)v+=e.amp*g(d,0,0.022);break;}
-      case 'QRS':{const d=t-e.t;if(d>-0.02&&d<0.26)v+=QRS[e.morph](d);break;}
-      case 'T':{const d=t-e.t;if(d>-0.2&&d<0.2)v+=e.amp*g(d,0,e.w);break;}
+      case 'QRS':{const d=t-e.t;if(d>-0.02&&d<0.3)v+=QRS[e.morph](d);break;}
+      case 'T':{const d=t-e.t;if(d>-0.25&&d<0.25)v+=e.amp*g(d,0,e.w);break;}
+      case 'spike':{const d=t-e.t;if(d>=-0.004&&d<0.004)v+=0.7*g(d,0,0.0015);break;}
       case 'saw':{if(t>=e.t0&&t<e.t1){const f=((t-e.t0)/e.period)%1;v+=0.2*(0.5-f)+0.05*Math.sin(6.283*f);}break;}
       case 'fibb':{if(t>=e.t0&&t<e.t1)v+=0.035*Math.sin(45.9*t)+0.03*Math.sin(73.5*t+1)+0.025*Math.sin(32*t+2)+0.02*Math.sin(101*t);break;}
+      case 'vfib':{if(t>=e.t0&&t<e.t1)v+=0.45*Math.sin(29*t+2*Math.sin(3.1*t))+0.3*Math.sin(41*t+1)+0.2*Math.sin(17*t+Math.sin(7*t)*3)+0.12*Math.sin(63*t);break;}
+      case 'tdp':{if(t>=e.t0&&t<e.t1){const u=t-e.t0;v+=(0.25+0.95*Math.abs(Math.sin(3.1416*u/1.4)))*Math.sin(2*3.1416*4.2*u);}break;}
+      case 'shock':{const d=t-e.t;if(d>=0&&d<0.5)v+=(d<0.02?2.5:0)+0.9*Math.exp(-d*6)*Math.sin(60*d);break;}
     }
   }
   return v;
@@ -621,7 +1095,7 @@ function sizeEcg(){
   const r=canvas.parentElement.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
   ecg.w=Math.round(r.width);ecg.h=Math.round(r.height);
   canvas.width=Math.round(ecg.w*dpr);canvas.height=Math.round(ecg.h*dpr);
-  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.lineWidth=2;ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle='#63e07d';
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.lineWidth=2;ctx.lineJoin='round';ctx.lineCap='round';ctx.strokeStyle='#7fe6cf';
   ctx.clearRect(0,0,ecg.w,ecg.h);ecg.lastT=null;
 }
 function drawEcg(t){
@@ -641,16 +1115,14 @@ function drawEcg(t){
 }
 
 /* ---------- Render ---------- */
-const pausedTag=$('#stagecard');
+const stageCard=$('#stagecard');
 function render(){
   const t=S.t;
-  // prune
   S.events=S.events.filter(e=>((e.t1!=null?e.t1:e.t+1.2)>t-1.2));
-  // chambers
-  const beat={ra:0,la:0,rv:0,lv:0},quiv={ra:false,la:false};
+  const beat={ra:0,la:0,rv:0,lv:0},quiv={ra:false,la:false,rv:false,lv:false};
   for(const e of S.events){
     if(e.k==='beat'&&e.t<=t&&t<e.t+e.dur){const p=Math.sin(Math.PI*(t-e.t)/e.dur)*e.amt;if(p>beat[e.ch])beat[e.ch]=p;}
-    else if(e.k==='quiver'&&e.t0<=t&&t<e.t1){quiv.ra=quiv.la=true;}
+    else if(e.k==='quiver'&&e.t0<=t&&t<e.t1){if(e.ch==='a'){quiv.ra=quiv.la=true;}else{quiv.rv=quiv.lv=true;}}
   }
   for(const id in CH){const c=CH[id];let p=beat[id],jx=0,jy=0;
     if(quiv[id]){p=0.3+0.25*Math.random();jx=(Math.random()-0.5)*3;jy=(Math.random()-0.5)*3;}
@@ -658,7 +1130,6 @@ function render(){
     c.el.setAttribute('transform',`translate(${c.cx+jx},${c.cy+jy}) scale(${s}) translate(${-c.cx},${-c.cy})`);
     c.el.style.fill=mix(c.base,ACTIVE,p);
   }
-  // trails and dots
   const latest={};
   for(const e of S.events){if(e.k==='travel'&&e.t0<=t&&t<e.t1+0.4){if(!latest[e.path]||e.t0>latest[e.path].t0)latest[e.path]=e;}}
   for(const id in trailEl){const e=latest[id],tr=trailEl[id],d=dotEl[id];
@@ -669,18 +1140,17 @@ function render(){
     if(t<e.t1){tr.style.opacity=1;const pt=tr.getPointAtLength(L*prog);d.setAttribute('cx',pt.x);d.setAttribute('cy',pt.y);d.style.opacity=1;}
     else{tr.style.opacity=clamp(1-(t-e.t1)/0.4,0,1);d.style.opacity=0;}
   }
-  // ripples
   let ri=0;
   for(const e of S.events){if(e.k==='fire'&&e.t<=t&&t<e.t+0.6&&ri<ripPool.length){const c=ripPool[ri++];const p=(t-e.t)/0.6;
     c.setAttribute('cx',e.x);c.setAttribute('cy',e.y);c.setAttribute('r',(e.small?3:5)+p*(e.small?12:22));c.style.opacity=(1-p)*(e.block?0.9:1);
-    c.classList.toggle('red',!!e.red);c.style.strokeDasharray=e.block?'3 3':'';}}
+    c.classList.toggle('red',!!e.red);c.classList.toggle('white',!!e.white);c.style.strokeDasharray=e.block?'3 3':'';}}
   for(;ri<ripPool.length;ri++)ripPool[ri].style.opacity=0;
-  // AV node hold glow
   let hold=false;for(const e of S.events){if(e.k==='hold'&&e.t0<=t&&t<e.t1){hold=true;break;}}
   const av=$('#node-av');av.classList.toggle('hold',hold);av.setAttribute('r',hold?9.5:7.5);
-  // rate
-  const past=S.qrs.filter(q=>q<=t&&q>t-6);
-  if(past.length>=2){const bpm=60*(past.length-1)/(past[past.length-1]-past[0]);$('#bpm').textContent=Math.round(bpm);}
+  const cfg=R[S.rhythm];
+  if(cfg.noRate){$('#bpm').textContent='--';}
+  else{const past=S.qrs.filter(q=>q<=t&&q>t-6);
+    if(past.length>=2){const bpm=60*(past.length-1)/(past[past.length-1]-past[0]);$('#bpm').textContent=Math.round(bpm);}}
   S.qrs=S.qrs.filter(q=>q>t-8);
   drawEcg(t);
 }
@@ -692,6 +1162,7 @@ function tick(now){
   let dt=(now-lastNow)/1000;lastNow=now;
   if(S.playing){
     dt=Math.min(dt,0.1)*S.speed;S.t+=dt;
+    if(S.pending&&S.t>=S.pending.at){const p=S.pending;S.pending=null;p.fn();}
     while(S.genUntil<S.t+2.5)S.genUntil=GEN[S.rhythm](S.genUntil);
     render();
   }
@@ -699,32 +1170,79 @@ function tick(now){
 }
 
 /* ---------- UI ---------- */
-function setRhythm(id){
-  S.rhythm=id;S.events=[];S.qrs=[];S.aux={};S.genUntil=S.t+0.25;
-  const cfg=R[id];
+let noteTimer=null;
+function showNote(html,ms){const n=$('#note');n.innerHTML=html;n.classList.add('show');clearTimeout(noteTimer);noteTimer=setTimeout(()=>n.classList.remove('show'),ms||6000);}
+function applyRhythmUi(id){
+  const cfg=R[id];S.lead=cfg.lead||'II';
   $('#rname').textContent=cfg.name;$('#regularity').textContent=cfg.reg;$('#origin').innerHTML=cfg.origin;$('#bpm').textContent='--';
+  $('#leadlbl').textContent='EKG · Lead '+S.lead;
   $('#readlink').href='#edu-'+id;
+  $('#shockbtn').hidden=!(cfg.tx&&cfg.tx.indexOf('shock')>=0);
+  $('#adenbtn').hidden=!(cfg.tx&&cfg.tx.indexOf('aden')>=0);
   buildMarks(cfg);
-  $('#node-sa').style.opacity=(id==='sinus'||id==='rbbb'||id==='lbbb')?'1':'0.4';
+  $('#node-sa').style.opacity=cfg.sa?'1':'0.35';
   document.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false'));
+  const sl=document.getElementById('rsel');if(sl)sl.value=id;
+}
+function setRhythm(id){
+  S.rhythm=id;S.events=[];S.qrs=[];S.aux={};S.pending=null;S.genUntil=S.t+0.25;
+  applyRhythmUi(id);
   document.querySelectorAll('details.rcard').forEach(d=>{d.open=(d.id==='edu-'+id);});
+  $('#note').classList.remove('show');
   if(!S.playing)render();
 }
 function setPlaying(p){
   S.playing=p;$('#playbtn').setAttribute('aria-pressed',p?'true':'false');$('#playtxt').textContent=p?'Pause':'Play';
   $('#playicon').innerHTML=p?'<rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/>':'<polygon points="1.5,0.5 9.5,5 1.5,9.5"/>';
-  pausedTag.classList.toggle('is-paused',!p);
+  stageCard.classList.toggle('is-paused',!p);
   if(p){ecg.lastT=null;}
 }
-for(const id in R){const b=document.createElement('button');b.className='chip'+(R[id].group==='bbb'?' bbb':'');b.type='button';b.dataset.id=id;b.textContent=R[id].chip;b.setAttribute('aria-pressed','false');
-  b.addEventListener('click',()=>{setRhythm(id);if(!S.playing)setPlaying(true);});
-  $('#chips-rhythm').appendChild(b);}
+const cg=$('#chipgroups');
+GROUPS.forEach(([gid,title])=>{
+  const h=document.createElement('h3');h.textContent=title;cg.appendChild(h);
+  const row=document.createElement('div');row.className='row';cg.appendChild(row);
+  for(const id in R){if(R[id].group!==gid)continue;
+    const b=document.createElement('button');b.className='chip';b.type='button';b.dataset.id=id;b.textContent=R[id].chip;b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',()=>{setRhythm(id);if(!S.playing)setPlaying(true);});
+    row.appendChild(b);}
+});
+const sel=$('#rsel'),ORDER=[];
+GROUPS.forEach(([gid,title])=>{const og=document.createElement('optgroup');og.label=title;for(const id in R){if(R[id].group!==gid)continue;const o=document.createElement('option');o.value=id;o.textContent=R[id].chip;og.appendChild(o);ORDER.push(id);}sel.appendChild(og);});
+sel.addEventListener('change',()=>{setRhythm(sel.value);if(!S.playing)setPlaying(true);});
+$('#prevbtn').addEventListener('click',()=>{const i=ORDER.indexOf(S.rhythm);setRhythm(ORDER[(i-1+ORDER.length)%ORDER.length]);if(!S.playing)setPlaying(true);});
+$('#nextbtn').addEventListener('click',()=>{const i=ORDER.indexOf(S.rhythm);setRhythm(ORDER[(i+1)%ORDER.length]);if(!S.playing)setPlaying(true);});
 $('#playbtn').addEventListener('click',()=>setPlaying(!S.playing));
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{S.speed=+b.dataset.speed;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));}));
-document.querySelectorAll('.showbtn').forEach(b=>b.addEventListener('click',()=>{setRhythm(b.dataset.show);if(!S.playing)setPlaying(true);$('#stagecard').scrollIntoView({behavior:'smooth',block:'start'});}));
+document.querySelectorAll('.showbtn').forEach(b=>b.addEventListener('click',()=>{setRhythm(b.dataset.show);if(!S.playing)setPlaying(true);stageCard.scrollIntoView({behavior:'smooth',block:'start'});}));
 document.addEventListener('keydown',e=>{if(e.code==='Space'&&!/INPUT|TEXTAREA|BUTTON|SUMMARY|A/.test(document.activeElement.tagName)){e.preventDefault();setPlaying(!S.playing);}});
 window.addEventListener('resize',sizeEcg);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){lastNow=null;ecg.lastT=null;}});
+
+/* ---------- Treatment demos ---------- */
+$('#shockbtn').addEventListener('click',()=>{
+  if(!S.playing)setPlaying(true);
+  const from=R[S.rhythm].name,wasVF=S.rhythm==='vf';
+  const f=$('#flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');
+  S.events=S.events.filter(e=>e.k==='QRS'||e.k==='T'||e.k==='P'||(e.k==='beat'&&e.t<S.t));
+  E({k:'shock',t:S.t});
+  S.rhythm='sinus';S.aux={};S.qrs=[];S.pending=null;S.genUntil=S.t+0.9;
+  applyRhythmUi('sinus');
+  showNote('<strong>Shock delivered.</strong> '+(wasVF?'The defibrillation':'The cardioversion')+' reset every cell at once, and after a brief pause the sinus node took charge again. Rhythm converted from '+from+' to normal sinus rhythm.',10000);
+});
+$('#adenbtn').addEventListener('click',()=>{
+  if(!S.playing)setPlaying(true);
+  const from=R[S.rhythm].name;
+  showNote('<strong>Adenosine given.</strong> It takes a few seconds to reach the heart, then it stops the AV node for a moment and breaks the loop.',12000);
+  $('#adenbtn').hidden=true;
+  S.pending={at:S.t+2.0,fn:()=>{
+    S.events=S.events.filter(e=>(e.k!=='travel'||e.t0<S.t)&&(e.k!=='beat'||e.t<S.t)&&(e.k!=='QRS'||e.t<S.t)&&(e.k!=='P'||e.t<S.t)&&(e.k!=='T'||e.t<S.t+0.2));
+    S.rhythm='sinus';S.aux={};S.qrs=[];S.genUntil=S.t+2.4;
+    applyRhythmUi('sinus');
+    E({k:'fire',x:AV.x,y:AV.y,t:S.t+0.05,red:true,small:true,block:true});
+    const tAv=sinusAtria(S.t+1.2,0.15);blockedP(tAv,AV);
+    showNote('<strong>Loop broken.</strong> The AV node paused for a couple of seconds (a brief and unpleasant feeling that passes quickly), and then the sinus node took charge again. Rhythm converted from '+from+' to normal sinus rhythm.',10000);
+  }};
+});
 
 sizeEcg();
 const hash=(location.hash||'').replace('#edu-','').replace('#','');
