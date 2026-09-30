@@ -69,6 +69,9 @@ main{max-width:560px;margin:0 auto;padding:0 12px 40px}
 .btn.primary svg{width:14px;height:14px;fill:currentColor}
 .btn.tx{border-color:var(--red);color:var(--red);font-weight:600}
 .btn.tx.aden{border-color:var(--teal);color:var(--teal)}
+.btn.tx.danger{background:var(--red);color:#fff}
+.txbar{display:contents}
+.note.bad{background:var(--red-soft);color:#6b1f14}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .seg button{border:0;background:#fff;padding:8px 12px;cursor:pointer;color:var(--ink);min-height:40px;font-size:.9rem;touch-action:manipulation}
 .seg button+button{border-left:1px solid var(--line)}
@@ -213,8 +216,7 @@ footer a{color:var(--sea)}
       <button data-speed="0.5" aria-pressed="false">½ speed</button>
       <button data-speed="0.25" aria-pressed="false">¼ speed</button>
     </div>
-    <button class="btn tx" id="shockbtn" hidden title="Deliver a shock (cardioversion or defibrillation)">⚡ Shock</button>
-    <button class="btn tx aden" id="adenbtn" hidden title="Give adenosine">💉 Adenosine</button>
+    <span id="txbar" class="txbar"></span>
     <a class="readlink" id="readlink" href="#edu-sinus">Read about this ↓</a>
   </div>
   <div class="legend"><span><i style="background:#25d3c9"></i>Electrical signal</span><span><i style="background:#cf4a3d"></i>Chamber squeezing</span><span><i style="background:#c8402f;border-radius:2px"></i>Rogue source or block</span><span><i style="background:#145C60;border-radius:2px"></i>Pacemaker</span></div>
@@ -501,7 +503,24 @@ footer a{color:var(--sea)}
       <div class="warn">Make sure every doctor treating you knows you have WPW, especially in an emergency, because the choice of medicines for a fast heart rhythm is different.</div>
       <h3>On the EKG</h3>
       <p>The PR interval is short and the start of the QRS is slurred, which is called a delta wave. Watch for the small early activation of the left ventricle near the extra pathway in the animation.</p>
+      <h3>Try the demonstration</h3>
+      <p>With the WPW pattern showing, press "Trigger atrial fibrillation" under the tracing to see what happens when AFib starts in a heart with an extra pathway. Then press "Give adenosine (the wrong drug)" to see why the usual medicines for a fast heart rhythm are dangerous here: blocking the AV node removes the only filter, the extra pathway conducts every signal, and the ventricles collapse into fibrillation. The Shock button then shows the correct emergency treatment.</p>
       <button class="btn showbtn" data-show="wpw">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-wpwaf">
+    <summary>WPW with atrial fibrillation <span class="tag">Extra pathway</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>This is the most dangerous situation an extra pathway can create. Atrial fibrillation sends hundreds of signals a minute toward the ventricles. In a normal heart the AV node acts as a filter and lets only a fraction through. The extra pathway has no such filter, so signals race down it as fast as the atria produce them. The ventricles are driven at 200 to 300 beats per minute in a fast, wide, irregular rhythm, and this can deteriorate into ventricular fibrillation.</p>
+      <h3>Why the usual medicines are dangerous</h3>
+      <p>The medicines normally used to slow a fast heart rhythm, including adenosine, digoxin, verapamil, and diltiazem, and to a lesser degree beta blockers, all work by slowing the AV node. In pre-excited atrial fibrillation that removes the only filter and pushes every signal down the extra pathway, which can make the heart rate faster and trigger ventricular fibrillation. This is why people with WPW should tell every doctor and every emergency team about it.</p>
+      <h3>How it is treated</h3>
+      <p>If the person is unstable, the treatment is an immediate electrical cardioversion. If the person is stable, medicines that slow the extra pathway itself, such as procainamide or ibutilide, are used instead of AV node blockers. After the emergency, catheter ablation of the pathway is strongly recommended, and it removes the risk.</p>
+      <h3>On the EKG</h3>
+      <p>A fast, irregular rhythm with wide, bizarre QRS complexes that vary in shape from beat to beat, sometimes with an occasional narrow beat that came through the AV node.</p>
+      <button class="btn showbtn" data-show="wpwaf">Show this in the animation ↑</button>
     </div>
   </details>
 
@@ -542,10 +561,10 @@ footer a{color:var(--sea)}
   </details>
 
   <details class="rcard" id="edu-lqt">
-    <summary>Long QT syndrome and torsades de pointes <span class="tag">Inherited</span></summary>
+    <summary>Long QT syndrome <span class="tag">Inherited</span></summary>
     <div class="body">
       <h3>What is happening</h3>
-      <p>The QT interval on the EKG measures how long the ventricles take to reset after each beat. In long QT syndrome the reset takes too long, because of a fault in the tiny channels that move potassium and sodium in and out of heart cells. Most of the time the heart beats normally. The danger is that an early beat can land while the ventricles are still resetting and set off a fast, twisting form of ventricular tachycardia called torsades de pointes. Torsades often stops on its own after a few seconds, causing a faint, but it can also deteriorate into ventricular fibrillation. The animation shows normal beats with a long QT, followed by a short run of torsades.</p>
+      <p>The QT interval on the EKG measures how long the ventricles take to reset after each beat. In long QT syndrome the reset takes too long, because of a fault in the tiny channels that move potassium and sodium in and out of heart cells. Most of the time the heart beats normally. The danger is that an early beat can land while the ventricles are still resetting and set off a fast, twisting form of ventricular tachycardia called torsades de pointes. Torsades often stops on its own after a few seconds, causing a faint, but it can also deteriorate into ventricular fibrillation. The animation shows normal beats with a long QT. Press "Trigger an early beat" under the tracing to see the early beat land on the T wave and set off torsades, then use the Shock button to end it.</p>
       <h3>Risk factors and causes</h3>
       <p>Long QT can be inherited, in which case it often first shows itself as fainting during exercise, swimming, emotional stress, or a sudden loud noise, and there may be a family history of fainting or unexplained sudden death at a young age. Far more often it is acquired: caused by medicines, low potassium or magnesium, or a slow heart rate. Many common medicines can prolong the QT, including some antibiotics, antifungals, antinausea medicines, antipsychotics, antidepressants, and methadone. Combining several of these, or taking them with diarrhea or vomiting, raises the risk.</p>
       <h3>How it is treated</h3>
@@ -553,6 +572,23 @@ footer a{color:var(--sea)}
       <h3>On the EKG</h3>
       <p>The T wave arrives late, so the distance from the start of the QRS to the end of the T wave is long. Torsades appears as a fast rhythm whose peaks seem to twist around the baseline, growing and shrinking.</p>
       <button class="btn showbtn" data-show="lqt">Show this in the animation ↑</button>
+    </div>
+  </details>
+
+  <details class="rcard" id="edu-torsades">
+    <summary>Torsades de pointes <span class="tag">Ventricles</span></summary>
+    <div class="body">
+      <h3>What is happening</h3>
+      <p>Torsades de pointes is a special form of ventricular tachycardia that occurs when the ventricles take too long to reset after each beat, which is what a long QT interval means. An early beat lands while parts of the ventricle are still resetting and the signal begins to spiral through the muscle. The name is French for "twisting of the points," because on the EKG the peaks of the beats seem to twist around the baseline, growing taller and then shorter. The heart rate is usually 200 to 250 beats per minute, and very little blood is pumped.</p>
+      <h3>What you might feel</h3>
+      <p>Short runs cause a sudden faint, a seizure-like spell, or a few seconds of pounding and dizziness, and then the rhythm often stops on its own. Longer runs can turn into ventricular fibrillation and cardiac arrest.</p>
+      <h3>Risk factors and causes</h3>
+      <p>Anything that lengthens the QT interval sets the stage: inherited long QT syndrome, low potassium or magnesium, a slow heart rate, and especially medicines. Many common drugs prolong the QT, including certain antibiotics, antifungals, antinausea medicines, antipsychotics, antidepressants, and methadone. The risk climbs when several are combined, when the kidneys or liver are not clearing them, or when vomiting or diarrhea drains potassium and magnesium. Women and older adults are more susceptible.</p>
+      <h3>How it is treated</h3>
+      <p>Intravenous magnesium is the first treatment and often stops the rhythm even when the magnesium level is normal. Potassium is corrected, every QT-prolonging medicine is stopped, and if the heart rate is slow it is sped up with a temporary pacemaker or a medicine such as isoproterenol, because a faster rate shortens the QT. If the person has no pulse, a shock is given at once. Torsades is different from ordinary ventricular tachycardia in one important way: some of the standard VT medicines, such as amiodarone and procainamide, lengthen the QT themselves and can make torsades worse, so they are avoided.</p>
+      <h3>On the EKG</h3>
+      <p>A fast, wide rhythm whose peaks grow and shrink in a twisting pattern around the baseline, usually starting after an early beat that lands on the previous T wave.</p>
+      <button class="btn showbtn" data-show="torsades">Show this in the animation ↑</button>
     </div>
   </details>
 
@@ -908,18 +944,32 @@ const GEN={
     while(S.aux.sinusNext<t0+len){const s=S.aux.sinusNext;const tAv=sinusAtria(s,0.06);blockedP(tAv,AV);S.aux.sinusNext+=0.86;}
     return t0+len;
   },
-  lqt:t0=>{
-    const n=(S.aux.n=(S.aux.n||0)+1);
-    sinusCycle(t0,{tT:0.50,tW:0.07});
-    if(n%8===0){
-      const ts=t0+0.66,len=3.0;
-      E({k:'fire',x:PVC_FOCUS.x,y:PVC_FOCUS.y,t:ts,red:true});
-      E({k:'tdp',t0:ts,t1:ts+len});
-      for(let tt=ts;tt<ts+len;tt+=0.24){E({k:'beat',ch:'lv',t:tt,dur:0.2,amt:0.7});E({k:'beat',ch:'rv',t:tt+0.08,dur:0.2,amt:0.7});
-        const p=VF_FOCI[Math.floor(Math.random()*VF_FOCI.length)];E({k:'fire',x:p.x,y:p.y,t:tt,red:true,small:true});}
-      return ts+len+0.9;
+  lqt:t0=>{sinusCycle(t0,{tT:0.50,tW:0.07});return t0+0.92;},
+  torsades:t0=>{
+    if(S.aux.base==null)S.aux.base=t0;
+    const len=0.48;
+    E({k:'tdp',t0:t0,t1:t0+len,base:S.aux.base});
+    for(let tt=t0;tt<t0+len;tt+=0.24){E({k:'beat',ch:'lv',t:tt,dur:0.2,amt:0.7});E({k:'beat',ch:'rv',t:tt+0.08,dur:0.2,amt:0.7});S.qrs.push(tt);
+      const p=VF_FOCI[Math.floor(Math.random()*VF_FOCI.length)];E({k:'fire',x:p.x,y:p.y,t:tt,red:true,small:true});}
+    E({k:'travel',path:'vt-lv',t0:t0,t1:t0+0.12,red:true});E({k:'travel',path:'vt-rv',t0:t0+0.24,t1:t0+0.36,red:true});
+    return t0+len;
+  },
+  wpwaf:t0=>{
+    const fast=!!S.aux.allAP;
+    const rr=fast?0.19+Math.random()*0.08:0.24+Math.random()*0.16;
+    E({k:'quiver',ch:'a',t0:t0,t1:t0+rr});E({k:'fibb',t0:t0,t1:t0+rr});
+    for(let i=0;i<2;i++){const p=AF_FOCI[Math.floor(Math.random()*AF_FOCI.length)];E({k:'fire',x:p.x,y:p.y,t:t0+Math.random()*rr,red:true,small:true});}
+    if(fast||Math.random()<0.75){
+      E({k:'travel',path:'ap',t0:t0,t1:t0+0.03,red:true});
+      E({k:'travel',path:'ap-lv',t0:t0+0.03,t1:t0+0.12,red:true});
+      E({k:'travel',path:'vt-lv',t0:t0+0.10,t1:t0+0.18,red:true});E({k:'travel',path:'vt-rv',t0:t0+0.18,t1:t0+0.26,red:true});
+      E({k:'beat',ch:'lv',t:t0+0.04,dur:0.24,amt:0.8});E({k:'beat',ch:'rv',t:t0+0.14,dur:0.24,amt:0.8});
+      E({k:'QRS',t:t0+0.02,morph:'preex'});S.qrs.push(t0+0.02);E({k:'T',t:t0+0.30,amp:-0.3,w:0.05});
+      if(fast)blockedP(t0,AV);
+    }else{
+      avAndBelow(t0,{delay:0.03});
     }
-    return t0+0.92;
+    return t0+rr;
   },
   apace:t0=>{avAndBelow(pacedAtria(t0),{delay:0.06});return t0+0.857;},
   vpace:t0=>{
@@ -985,9 +1035,12 @@ const R={
   avrt:{name:'AVRT (loop using an extra pathway)',chip:'AVRT (extra pathway)',group:'svt',reg:'regular',tx:['aden'],
     origin:'<strong>An extra pathway connects the atrium and ventricle.</strong> The signal goes down through the AV node and races back up the extra pathway, looping around and around.',
     wires:['ap'],marks:[{type:'label',x:350,y:154,text:'Extra pathway',anchor:'end'}]},
-  wpw:{name:'Sinus rhythm with WPW (pre-excitation)',chip:'WPW pattern',group:'svt',reg:'regular',sa:true,
+  wpw:{name:'Sinus rhythm with WPW (pre-excitation)',chip:'WPW pattern',group:'svt',reg:'regular',sa:true,tx:['startaf'],
     origin:SINUS_OK+'The rate is normal, but each signal also takes a <strong>shortcut through an extra pathway</strong> with no delay, so part of the left ventricle fires a fraction early (the delta wave).',
     wires:['ap'],marks:[{type:'label',x:350,y:154,text:'Extra pathway (shortcut)',anchor:'end'}]},
+  wpwaf:{name:'WPW with atrial fibrillation (pre-excited AFib)',chip:'WPW with AFib (dangerous)',group:'svt',reg:'irregular, very fast',tx:['badaden','shock'],shockTo:'wpw',
+    origin:'<strong>Atrial fibrillation in someone with an extra pathway.</strong> The AV node filters the chaos, but the extra pathway does not, so most fibrillation signals reach the ventricles unfiltered at dangerous speed. Giving adenosine here would be a serious mistake.',
+    wires:['ap'],marks:AF_FOCI.slice(0,5).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:350,y:154,text:'Unfiltered shortcut',anchor:'end',red:true}])},
 
   vt:{name:'Ventricular tachycardia',chip:'Ventricular tach (VT)',group:'vent',reg:'regular',tx:['shock'],
     origin:'<strong>A rogue spot in the ventricle muscle</strong> fires fast. The signal spreads slowly from cell to cell instead of using the fast wiring, so the ventricles squeeze poorly. The atria keep beating on their own in the background.',
@@ -995,9 +1048,12 @@ const R={
   vf:{name:'Ventricular fibrillation (cardiac arrest)',chip:'Ventricular fib (VF)',group:'vent',reg:'no effective heartbeat',tx:['shock'],noRate:true,
     origin:'<strong>Countless spots in the ventricles fire chaotically.</strong> The ventricles quiver and pump no blood at all. This is cardiac arrest. The only treatment is a shock.',
     marks:VF_FOCI.slice(0,6).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:368,text:'Chaos in the ventricles: no pumping',red:true}])},
-  lqt:{name:'Long QT syndrome with a run of torsades',chip:'Long QT / torsades',group:'vent',reg:'regular, then a burst',sa:true,
-    origin:SINUS_OK+'The rhythm is normal but the <strong>ventricles take too long to reset</strong> (long QT). An early beat lands during the reset and sets off a short, twisting run of fast ventricular rhythm (torsades).',
-    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6},{type:'label',x:284,y:368,text:'Early beat sets off torsades'}]},
+  lqt:{name:'Long QT syndrome',chip:'Long QT syndrome',group:'vent',reg:'regular',sa:true,tx:['pvc'],
+    origin:SINUS_OK+'The rhythm is normal but the <strong>ventricles take too long to reset</strong> after each beat (a long QT interval). An early beat that lands during the reset can set off torsades. Press the button below the tracing to trigger one.',
+    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6,hollow:true},{type:'label',x:284,y:368,text:'An early beat from here is the danger'}]},
+  torsades:{name:'Torsades de pointes',chip:'Torsades de pointes',group:'vent',reg:'fast, twisting',tx:['shock'],shockTo:'lqt',
+    origin:'<strong>A twisting form of ventricular tachycardia.</strong> The signal spirals through ventricles that have not finished resetting, so the beats grow and shrink on the tracing. It often stops on its own, but it can turn into ventricular fibrillation at any moment.',
+    marks:VF_FOCI.slice(0,5).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:368,text:'Spiralling signal in the ventricles',red:true}])},
   brugada:{name:'Brugada syndrome (sinus rhythm)',chip:'Brugada syndrome',group:'vent',reg:'regular',sa:true,lead:'V1',
     origin:SINUS_OK+'The rhythm is normal. The problem is a <strong>vulnerable patch in the right ventricle</strong> that recovers unevenly and can set off ventricular fibrillation, most often during sleep or fever. Lead V1 shows the telltale pattern.',
     marks:[{type:'zone',x:168,y:214,rx:26,ry:15},{type:'label',x:172,y:248,text:'Vulnerable area',red:true}]},
@@ -1070,6 +1126,7 @@ const QRS={
   crt:dt=>-0.1*g(dt,0.015,0.006)+1.0*g(dt,0.05,0.016)-0.3*g(dt,0.09,0.012),
   v1narrow:dt=>0.25*g(dt,0.02,0.008)-0.85*g(dt,0.045,0.011),
   v1rbbb:dt=>0.3*g(dt,0.02,0.008)-0.45*g(dt,0.045,0.01)+0.85*g(dt,0.10,0.02),
+  preex:dt=>1.15*g(dt,0.06,0.03)-0.55*g(dt,0.135,0.028),
   brugada:dt=>0.25*g(dt,0.02,0.008)-0.2*g(dt,0.04,0.008)+0.6*g(dt,0.085,0.028)+0.32*g(dt,0.17,0.06)
 };
 function ecgValue(t){
@@ -1083,7 +1140,7 @@ function ecgValue(t){
       case 'saw':{if(t>=e.t0&&t<e.t1){const f=((t-e.t0)/e.period)%1;v+=0.2*(0.5-f)+0.05*Math.sin(6.283*f);}break;}
       case 'fibb':{if(t>=e.t0&&t<e.t1)v+=0.035*Math.sin(45.9*t)+0.03*Math.sin(73.5*t+1)+0.025*Math.sin(32*t+2)+0.02*Math.sin(101*t);break;}
       case 'vfib':{if(t>=e.t0&&t<e.t1)v+=0.45*Math.sin(29*t+2*Math.sin(3.1*t))+0.3*Math.sin(41*t+1)+0.2*Math.sin(17*t+Math.sin(7*t)*3)+0.12*Math.sin(63*t);break;}
-      case 'tdp':{if(t>=e.t0&&t<e.t1){const u=t-e.t0;v+=(0.25+0.95*Math.abs(Math.sin(3.1416*u/1.4)))*Math.sin(2*3.1416*4.2*u);}break;}
+      case 'tdp':{if(t>=e.t0&&t<e.t1){const u=t-(e.base!=null?e.base:e.t0);v+=(0.25+0.95*Math.abs(Math.sin(3.1416*u/1.4)))*Math.sin(2*3.1416*4.2*u);}break;}
       case 'shock':{const d=t-e.t;if(d>=0&&d<0.5)v+=(d<0.02?2.5:0)+0.9*Math.exp(-d*6)*Math.sin(60*d);break;}
     }
   }
@@ -1177,14 +1234,15 @@ function applyRhythmUi(id){
   $('#rname').textContent=cfg.name;$('#regularity').textContent=cfg.reg;$('#origin').innerHTML=cfg.origin;$('#bpm').textContent='--';
   $('#leadlbl').textContent='EKG · Lead '+S.lead;
   $('#readlink').href='#edu-'+id;
-  $('#shockbtn').hidden=!(cfg.tx&&cfg.tx.indexOf('shock')>=0);
-  $('#adenbtn').hidden=!(cfg.tx&&cfg.tx.indexOf('aden')>=0);
+  const bar=$('#txbar');bar.innerHTML='';
+  (cfg.tx||[]).forEach(a=>{const A=ACTIONS[a];const b=document.createElement('button');b.type='button';b.className='btn tx '+(A.cls||'');b.textContent=A.label;b.title=A.title||'';b.addEventListener('click',()=>{if(!S.playing)setPlaying(true);A.run();});bar.appendChild(b);});
   buildMarks(cfg);
   $('#node-sa').style.opacity=cfg.sa?'1':'0.35';
   document.querySelectorAll('.chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false'));
   const sl=document.getElementById('rsel');if(sl)sl.value=id;
 }
 function setRhythm(id){
+  R.vf.shockTo='sinus';$('#note').classList.remove('bad');
   S.rhythm=id;S.events=[];S.qrs=[];S.aux={};S.pending=null;S.genUntil=S.t+0.25;
   applyRhythmUi(id);
   document.querySelectorAll('details.rcard').forEach(d=>{d.open=(d.id==='edu-'+id);});
@@ -1219,30 +1277,81 @@ window.addEventListener('resize',sizeEcg);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){lastNow=null;ecg.lastT=null;}});
 
 /* ---------- Treatment demos ---------- */
-$('#shockbtn').addEventListener('click',()=>{
-  if(!S.playing)setPlaying(true);
-  const from=R[S.rhythm].name,wasVF=S.rhythm==='vf';
-  const f=$('#flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');
-  S.events=S.events.filter(e=>e.k==='QRS'||e.k==='T'||e.k==='P'||(e.k==='beat'&&e.t<S.t));
-  E({k:'shock',t:S.t});
-  S.rhythm='sinus';S.aux={};S.qrs=[];S.pending=null;S.genUntil=S.t+0.9;
-  applyRhythmUi('sinus');
-  showNote('<strong>Shock delivered.</strong> '+(wasVF?'The defibrillation':'The cardioversion')+' reset every cell at once, and after a brief pause the sinus node took charge again. Rhythm converted from '+from+' to normal sinus rhythm.',10000);
-});
-$('#adenbtn').addEventListener('click',()=>{
-  if(!S.playing)setPlaying(true);
-  const from=R[S.rhythm].name;
-  showNote('<strong>Adenosine given.</strong> It takes a few seconds to reach the heart, then it stops the AV node for a moment and breaks the loop.',12000);
-  $('#adenbtn').hidden=true;
-  S.pending={at:S.t+2.0,fn:()=>{
-    S.events=S.events.filter(e=>(e.k!=='travel'||e.t0<S.t)&&(e.k!=='beat'||e.t<S.t)&&(e.k!=='QRS'||e.t<S.t)&&(e.k!=='P'||e.t<S.t)&&(e.k!=='T'||e.t<S.t+0.2));
-    S.rhythm='sinus';S.aux={};S.qrs=[];S.genUntil=S.t+2.4;
-    applyRhythmUi('sinus');
-    E({k:'fire',x:AV.x,y:AV.y,t:S.t+0.05,red:true,small:true,block:true});
-    const tAv=sinusAtria(S.t+1.2,0.15);blockedP(tAv,AV);
-    showNote('<strong>Loop broken.</strong> The AV node paused for a couple of seconds (a brief and unpleasant feeling that passes quickly), and then the sinus node took charge again. Rhythm converted from '+from+' to normal sinus rhythm.',10000);
-  }};
-});
+function switchTo(id,o){ // change rhythm without wiping the tracing or the ripples already in flight
+  o=o||{};
+  S.rhythm=id;S.aux=o.aux||{};S.qrs=[];S.pending=null;S.genUntil=S.t+(o.gap!=null?o.gap:0.1);
+  if(o.clear){
+    const cont={quiver:1,fibb:1,vfib:1,tdp:1,saw:1};
+    S.events=S.events.filter(e=>{
+      if(cont[e.k]){if(e.t0>S.t)return false;if(e.t1>S.t)e.t1=S.t;return true;}
+      if(e.k==='travel')return e.t0<S.t;
+      if(e.k==='beat'||e.k==='QRS'||e.k==='P'||e.k==='fire'||e.k==='spike')return e.t<S.t;
+      if(e.k==='T')return e.t<S.t+0.2;
+      return true;
+    });
+  }
+  applyRhythmUi(id);
+  document.querySelectorAll('details.rcard').forEach(d=>{d.open=(d.id==='edu-'+id);});
+}
+function showBad(html,ms){showNote(html,ms);$('#note').classList.add('bad');}
+function showGood(html,ms){showNote(html,ms);$('#note').classList.remove('bad');}
+const ACTIONS={
+  shock:{label:'⚡ Shock',title:'Deliver a shock (cardioversion or defibrillation)',run:()=>{
+    const cfg=R[S.rhythm],from=cfg.name,wasVF=(S.rhythm==='vf'||S.rhythm==='torsades'),to=cfg.shockTo||'sinus';
+    const f=$('#flash');f.classList.remove('on');void f.offsetWidth;f.classList.add('on');
+    S.events=S.events.filter(e=>e.k==='QRS'||e.k==='T'||e.k==='P'||(e.k==='beat'&&e.t<S.t));
+    E({k:'shock',t:S.t});
+    switchTo(to,{gap:0.9});
+    const toName=R[to].name;
+    showGood('<strong>Shock delivered.</strong> '+(wasVF?'The defibrillation':'The cardioversion')+' reset every cell at once, and after a brief pause the sinus node took charge again. Rhythm converted from '+from+' to '+toName.toLowerCase().replace('sinus rhythm with wpw','sinus rhythm with WPW')+(to==='wpw'?'. The extra pathway is still there, so the risk remains until it is ablated.':(to==='lqt'?'. The long QT is still there, so the trigger has to be found and removed.':'.')),11000);
+  }},
+  aden:{label:'💉 Adenosine',cls:'aden',title:'Give adenosine',run:()=>{
+    const from=R[S.rhythm].name;
+    showGood('<strong>Adenosine given.</strong> It takes a few seconds to reach the heart, then it stops the AV node for a moment and breaks the loop.',12000);
+    $('#txbar').innerHTML='';
+    S.pending={at:S.t+2.0,fn:()=>{
+      switchTo('sinus',{gap:2.4,clear:true});
+      E({k:'fire',x:AV.x,y:AV.y,t:S.t+0.05,red:true,small:true,block:true});
+      const tAv=sinusAtria(S.t+1.2,0.15);blockedP(tAv,AV);
+      showGood('<strong>Loop broken.</strong> The AV node paused for a couple of seconds (a brief and unpleasant feeling that passes quickly), and then the sinus node took charge again. Rhythm converted from '+from+' to normal sinus rhythm.',10000);
+    }};
+  }},
+  pvc:{label:'⚡ Trigger an early beat (PVC)',cls:'',title:'Fire a premature ventricular beat onto the late T wave',run:()=>{
+    // find the next QRS already scheduled and land the PVC on its late T wave (R on T)
+    const q=S.events.filter(e=>e.k==='QRS'&&e.t>S.t+0.15).sort((a,b)=>a.t-b.t)[0];
+    const tp=(q?q.t:S.t+0.3)+0.40;
+    showGood('<strong>Early beat coming.</strong> Watch it land on the T wave, while the ventricles are still resetting.',6000);
+    $('#txbar').innerHTML='';
+    S.genUntil=Math.max(S.genUntil,tp+0.5);S.events=S.events.filter(e=>!((e.k==='QRS'||e.k==='P'||e.k==='T')&&e.t>tp)&&!(e.k==='beat'&&e.t>tp)&&!(e.k==='travel'&&e.t0>tp)&&!(e.k==='fire'&&e.t>tp));
+    E({k:'fire',x:PVC_FOCUS.x,y:PVC_FOCUS.y,t:tp,red:true});
+    E({k:'travel',path:'vt-lv',t0:tp,t1:tp+0.10,red:true});
+    E({k:'beat',ch:'lv',t:tp+0.02,dur:0.24,amt:0.8});E({k:'beat',ch:'rv',t:tp+0.10,dur:0.24,amt:0.8});
+    E({k:'QRS',t:tp,morph:'vt'});
+    S.pending={at:tp+0.22,fn:()=>{
+      switchTo('torsades',{gap:0.02,aux:{base:S.t}});
+      showBad('<strong>R on T.</strong> The early beat landed while the ventricles were still resetting and set off torsades de pointes. It may stop by itself after a few seconds, or it may not. Magnesium is given right away; a shock is used if the person loses their pulse.',14000);
+    }};
+  }},
+  startaf:{label:'⚡ Trigger atrial fibrillation',cls:'',title:'Start AFib in a heart with an extra pathway',run:()=>{
+    switchTo('wpwaf',{gap:0.05,clear:true});
+    showBad('<strong>AFib has started.</strong> The atria are firing hundreds of times a minute. The AV node filters most of that, but the extra pathway lets signals straight through, so the ventricles are running fast, wide, and irregular. The correct treatments are a shock if the person is unstable, or procainamide or ibutilide. Never give adenosine, digoxin, diltiazem, or verapamil here.',16000);
+  }},
+  badaden:{label:'💉 Give adenosine (the wrong drug)',cls:'danger',title:'Show why AV-node blockers are dangerous in pre-excited AFib',run:()=>{
+    $('#txbar').innerHTML='';
+    showBad('<strong>Adenosine given.</strong> It is about to block the AV node, which was the only thing filtering the fibrillation signals.',5000);
+    S.pending={at:S.t+1.6,fn:()=>{
+      S.aux.allAP=true;S.genUntil=S.t+0.05;
+      applyRhythmUi('wpwaf');$('#txbar').innerHTML='';
+      $('#regularity').textContent='irregular, extremely fast';
+      showBad('<strong>The AV node is blocked and the filter is gone.</strong> Every fibrillation signal now goes down the extra pathway unopposed, and the ventricles are being driven at close to 300 beats per minute.',7000);
+      S.pending={at:S.t+3.2,fn:()=>{
+        switchTo('vf',{gap:0.02});
+        R.vf.shockTo='wpw';
+        showBad('<strong>Ventricular fibrillation.</strong> The ventricles could not keep up and dissolved into chaos. This is cardiac arrest, and the only treatment now is an immediate shock.',20000);
+      }};
+    }};
+  }}
+};
 
 sizeEcg();
 const hash=(location.hash||'').replace('#edu-','').replace('#','');

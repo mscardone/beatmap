@@ -8,10 +8,10 @@ Live site: https://projects.scottcardone.com/beatmap/
 
 - Animated heart showing the atria, ventricles, sinus node, AV node, bundle of His, and bundle branches, with the electrical signal travelling through the conduction system in real time.
 - Live EKG tracing (lead II style) drawn from the same timing as the animation, so the P wave, QRS, and T wave line up with what the chambers are doing.
-- Rhythms: normal sinus rhythm, slow sinus rhythm with pauses (sick sinus), right and left bundle branch block, first-degree AV block, second-degree AV block types 1 and 2, complete heart block, PACs, PVCs, atrial fibrillation, atrial flutter, ectopic atrial tachycardia, AVNRT, AVRT, WPW pattern, ventricular tachycardia, ventricular fibrillation, long QT with a run of torsades, and Brugada syndrome.
+- Rhythms: normal sinus rhythm, slow sinus rhythm with pauses (sick sinus), right and left bundle branch block, first-degree AV block, second-degree AV block types 1 and 2, complete heart block, PACs, PVCs, atrial fibrillation, atrial flutter, ectopic atrial tachycardia, AVNRT, AVRT, WPW pattern, ventricular tachycardia, ventricular fibrillation, long QT syndrome, torsades de pointes, WPW with atrial fibrillation, and Brugada syndrome.
 - Pacemaker modes: atrial pacing, ventricular pacing (over complete heart block), dual chamber pacing, and CRT (biventricular pacing), each with the generator and leads drawn and pacing spikes on the tracing.
 - Each rhythm marks where the rogue signal starts (or where the block is) and shows how the signal spreads.
-- Shock and Adenosine buttons appear for the rhythms they treat and show the conversion back to sinus rhythm.
+- Demo buttons appear under the tracing for the rhythms they apply to: Shock and Adenosine show conversion back to sinus rhythm; on the long QT page a button fires a PVC onto the T wave and sets off torsades; on the WPW page a button starts atrial fibrillation and a second, deliberately wrong, button gives adenosine to show the pathway conducting unfiltered and the rhythm degenerating into VF.
 - The tracing switches to lead V1 for right bundle branch block and Brugada syndrome, where those patterns are best seen.
 - Pause and play, plus half and quarter speed for walking a patient through the conduction pathway.
 - Patient education text below the animation for every rhythm: what it is, what it feels like, risk factors, and the principles of treatment.
@@ -25,7 +25,7 @@ Live site: https://projects.scottcardone.com/beatmap/
 
 ## Editing the content
 
-All patient text lives in `index.html` inside the `<section class="edu">` block, one `<details>` card per rhythm. The one-line "where the beat comes from" summaries shown above the EKG are in the `R` object in the script (`origin:` fields), along with each rhythm's chip label, group, and on-diagram markers. Rhythm timing lives in the `GEN` object, and EKG wave shapes live in the `QRS` object.
+All patient text lives in `index.html` inside the `<section class="edu">` block, one `<details>` card per rhythm. The one-line "where the beat comes from" summaries shown above the EKG are in the `R` object in the script (`origin:` fields), along with each rhythm's chip label, group, and on-diagram markers. Rhythm timing lives in the `GEN` object, EKG wave shapes live in the `QRS` object, and the demo buttons are defined in the `ACTIONS` object (each rhythm lists the ones it shows in its `tx` field).
 
 ## Publishing
 
