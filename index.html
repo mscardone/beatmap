@@ -39,7 +39,7 @@ main{max-width:560px;margin:0 auto;padding:0 12px 40px}
 @media(min-width:900px){ main{max-width:980px} .demo{display:grid;grid-template-columns:minmax(0,600px) minmax(320px,1fr);gap:16px;align-items:start} .demo .stagecol{grid-column:1;order:0} .demo .sidecol{grid-column:2;order:1;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto} }
 
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.04);margin:12px 0;overflow:hidden}
-.stage{padding:8px 8px 0;position:relative}
+.stage{padding:12px 8px 54px;position:relative;background:radial-gradient(ellipse at 50% 45%,#fff 25%,#f6f8f6 100%)}
 #playbtn{position:absolute;left:10px;bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:2}
 .stage svg{width:100%;height:auto;display:block;max-height:44vh;margin:0 auto}
 @media(min-width:900px){.stage svg{max-height:70vh}}
@@ -101,20 +101,22 @@ main{max-width:560px;margin:0 auto;padding:0 12px 40px}
 .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:4px}
 
 /* SVG heart */
-.chamber{fill:var(--muscle);stroke:var(--teal-ink);stroke-width:2.2;stroke-linejoin:round}
-.chamber.v{fill:var(--muscle-dark)}
-.septum{fill:var(--septum);stroke:var(--teal-ink);stroke-width:1.2}
-.groove{fill:var(--groove);stroke:var(--teal-ink);stroke-width:1.2}
-.wire{fill:none;stroke:var(--teal);stroke-width:2.4;stroke-dasharray:3 4;stroke-linecap:round;opacity:.8}
+.heart-wall{fill:url(#wall-tone);stroke:#a95651;stroke-width:1.5;stroke-linejoin:round}
+.chamber{fill:currentColor;stroke:#b56d64;stroke-width:1.1;stroke-linejoin:round}
+.chamber-light{fill:url(#chamber-light);stroke:none;pointer-events:none}
+.heart-seam{fill:none;stroke:#fff3e9;stroke-width:2;stroke-linecap:round;opacity:.8}
+.groove{fill:none;stroke:#b56d64;stroke-width:1.5;stroke-linecap:round}
+.wire{fill:none;stroke:var(--teal);stroke-width:1.8;stroke-dasharray:2.5 4;stroke-linecap:round;opacity:.7}
 .wire.alt{stroke:var(--red);opacity:.55}
 .trail{fill:none;stroke:var(--signal-bright);stroke-width:5;stroke-linecap:round;opacity:0;filter:url(#glow)}
 .trail.red{stroke:#ff6b57}
 .dot{fill:#fff;stroke:var(--signal-bright);stroke-width:3.5;opacity:0;filter:url(#glow)}
 .dot.red{stroke:#ff6b57}
-.node{fill:var(--sea);stroke:var(--teal-ink);stroke-width:1.6}
+.node{fill:#e6f7f1;stroke:var(--teal);stroke-width:2}
 .node.hold{fill:var(--signal-bright)}
 .lab{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:11.5px;fill:var(--teal-ink);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
 .lab.small{font-size:10px;fill:#4f5c5b}
+.lab.chamber-name{font-size:12px;font-weight:600;fill:#633e3c;stroke:#fff6ef;stroke-width:2.5px}
 .lab.red{fill:var(--red);font-weight:700}
 .lab.teal{fill:var(--teal);font-weight:700}
 .ripple{fill:none;stroke:var(--signal-bright);stroke-width:2.5;opacity:0}
@@ -169,17 +171,39 @@ footer a{color:var(--sea)}
   <div class="stage">
   <button class="btn primary" id="playbtn" aria-pressed="true"><svg viewBox="0 0 10 10" id="playicon"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg><span id="playtxt">Pause</span></button>
   <div class="flash" id="flash"></div>
-  <svg id="heart" viewBox="30 16 340 364" role="img" aria-label="Animated diagram of the heart showing the four chambers, the sinus node, the AV node, and the electrical wiring, with the current rhythm's signal travelling through it.">
+  <svg id="heart" viewBox="20 4 370 400" role="img" aria-label="Animated diagram of the heart showing the four chambers, the sinus node, the AV node, and the electrical wiring, with the current rhythm's signal travelling through it.">
     <defs>
       <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <linearGradient id="wall-tone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5c5b6"/><stop offset=".5" stop-color="#d98e82"/><stop offset="1" stop-color="#b96562"/></linearGradient>
+      <linearGradient id="chamber-light" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fffaf0" stop-opacity=".55"/><stop offset=".55" stop-color="#fffaf0" stop-opacity=".05"/><stop offset="1" stop-color="#984743" stop-opacity=".12"/></linearGradient>
+      <filter id="heart-shadow" x="-15%" y="-10%" width="130%" height="130%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#623e38" flood-opacity=".12"/></filter>
+      <path id="shape-ra" d="M140,62 C169,62 184,85 187,112 C189,137 184,160 191,174 C166,183 123,184 97,171 C79,157 65,131 66,109 C67,80 99,60 140,62 Z"/>
+      <path id="shape-la" d="M217,75 C237,57 268,54 294,61 C328,68 350,87 351,114 C352,137 342,159 332,172 C300,181 251,170 214,175 C215,149 206,103 217,75 Z"/>
+      <path id="shape-rv" d="M96,196 C124,202 159,190 187,194 C188,226 183,256 186,284 C189,307 183,334 174,340 C149,338 120,312 106,283 C92,254 88,221 96,196 Z"/>
+      <path id="shape-lv" d="M215,194 C248,187 294,198 333,188 C347,218 338,260 322,291 C305,324 279,351 253,363 C237,356 221,338 216,313 C206,272 212,230 215,194 Z"/>
     </defs>
+    <!-- A continuous muscle wall unites the four simplified chambers. All
+         conduction coordinates stay in the original teaching diagram's space. -->
+    <path class="heart-wall" filter="url(#heart-shadow)" d="M140,52 C165,52 184,62 200,72 C218,49 249,44 281,48 C325,51 355,76 361,110 C367,145 347,169 348,194 C364,242 343,302 310,343 C289,368 268,383 253,382 C231,377 217,360 197,352 C158,351 125,330 101,294 C78,260 75,226 77,191 C58,165 48,129 55,101 C63,68 98,49 140,52 Z"/>
     <g id="chambers">
-      <path id="ch-ra" class="chamber" data-cx="122" data-cy="118" d="M56,96 C56,58 104,44 150,58 C186,70 190,120 186,176 L110,186 C70,182 52,140 56,96 Z"/>
-      <path id="ch-la" class="chamber" data-cx="282" data-cy="112" d="M214,62 C258,40 330,44 352,90 C364,120 352,152 336,172 L214,176 C204,140 204,100 214,62 Z"/>
-      <path id="ch-rv" class="chamber v" data-cx="146" data-cy="272" d="M100,196 L190,193 L192,322 C190,352 160,372 134,356 C98,334 84,282 100,196 Z"/>
-      <path id="ch-lv" class="chamber v" data-cx="276" data-cy="280" d="M212,193 L336,186 C358,232 358,300 322,346 C296,382 246,378 216,348 C200,322 204,240 212,193 Z"/>
-      <path class="septum" d="M190,193 L212,193 L208,346 L196,340 Z"/>
-      <path class="groove" d="M52,178 L358,172 C362,180 362,186 358,192 L52,194 C48,188 48,184 52,178 Z"/>
+      <g id="ch-ra" data-cx="130" data-cy="120" style="color:#f2c8b9">
+        <use href="#shape-ra" class="chamber"/>
+        <use href="#shape-ra" class="chamber-light"/>
+      </g>
+      <g id="ch-la" data-cx="280" data-cy="118" style="color:#f2c8b9">
+        <use href="#shape-la" class="chamber"/>
+        <use href="#shape-la" class="chamber-light"/>
+      </g>
+      <g id="ch-rv" data-cx="146" data-cy="265" style="color:#eeb6a6">
+        <use href="#shape-rv" class="chamber"/>
+        <use href="#shape-rv" class="chamber-light"/>
+      </g>
+      <g id="ch-lv" data-cx="273" data-cy="272" style="color:#eeb6a6">
+        <use href="#shape-lv" class="chamber"/>
+        <use href="#shape-lv" class="chamber-light"/>
+      </g>
+      <path class="heart-seam" d="M200,85 C197,121 200,149 201,168 M201,222 C196,273 200,317 210,337"/>
+      <path class="groove" d="M85,183 C124,197 166,178 191,184 M210,184 C250,176 295,193 343,180"/>
     </g>
     <g id="wires"></g>
     <g id="device"></g>
@@ -190,10 +214,10 @@ footer a{color:var(--sea)}
     <g id="ripples"></g>
     <g id="dots"></g>
     <g id="labels">
-      <text class="lab" x="82" y="140">Right atrium</text>
-      <text class="lab" x="258" y="128">Left atrium</text>
-      <text class="lab" x="104" y="286">Right ventricle</text>
-      <text class="lab" x="244" y="300">Left ventricle</text>
+      <text class="lab chamber-name" x="126" y="139" text-anchor="middle">Right atrium</text>
+      <text class="lab chamber-name" x="276" y="128" text-anchor="middle">Left atrium</text>
+      <text class="lab chamber-name" x="144" y="270" text-anchor="middle"><tspan x="144">Right</tspan><tspan x="144" dy="14">ventricle</tspan></text>
+      <text class="lab chamber-name" x="277" y="290" text-anchor="middle"><tspan x="277">Left</tspan><tspan x="277" dy="14">ventricle</tspan></text>
       <text class="lab small" x="140" y="48" text-anchor="middle">Sinus node (pacemaker)</text>
       <text class="lab small" x="212" y="176">AV node</text>
       <text class="lab small" x="214" y="214">Bundle of His</text>
@@ -687,7 +711,7 @@ const g=(x,m,s)=>Math.exp(-((x-m)*(x-m))/(2*s*s));
 /* ---------- Geometry (viewBox units) ---------- */
 const PATHS={
   'sa-ra':'M140,62 C118,100 128,152 194,181',
-  'sa-la':'M140,62 C190,38 262,44 306,80 C322,96 332,122 326,144',
+  'sa-la':'M140,62 C192,100 262,44 306,80 C322,96 332,122 326,144',
   'his':'M200,186 L200,216',
   'rbb':'M200,216 C196,258 194,290 180,325',
   'rpurk1':'M180,325 C160,340 133,322 113,282',
@@ -718,7 +742,7 @@ const PATHS={
   'vt-rv':'M186,300 C160,332 124,320 110,270',
   'esc-his':'M200,232 C202,250 204,262 208,272',
   'pra-av':'M104,104 C130,132 160,162 194,182',
-  'pra-la':'M104,104 C160,60 240,50 306,80 C322,96 332,122 326,144',
+  'pra-la':'M104,104 C160,60 240,70 306,80 C322,96 332,122 326,144',
   'prv-up':'M150,330 C120,300 106,250 128,214',
   'prv-lv':'M150,330 C200,352 262,342 304,282',
   'plv-spread':'M330,272 C300,326 250,344 216,300'
@@ -1017,7 +1041,7 @@ const R={
     marks:[{type:'focus',x:PAC_FOCUS.x,y:PAC_FOCUS.y,r:6},{type:'label',x:300,y:30,text:'Early beat from here'}]},
   pvc:{name:'Sinus rhythm with premature ventricular contractions',chip:'PVCs (early ventricular beats)',group:'extra',reg:'occasional early beat',sa:true,
     origin:SINUS_OK+'Every fourth beat, <strong>a spot in the ventricle fires early</strong>. The ventricles squeeze out of sync, the next sinus signal is blocked, and a longer pause follows, which is the "skipped beat" people feel.',
-    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6},{type:'label',x:292,y:368,text:'Early beat from here'}]},
+    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6},{type:'label',x:292,y:396,text:'Early beat from here'}]},
 
   afib:{name:'Atrial fibrillation',chip:'Atrial fibrillation',group:'atrial',reg:'irregular',tx:['shock'],
     origin:'<strong>Many rogue spots in the atria fire chaotically.</strong> The atria quiver instead of squeezing. The AV node lets signals through at random, so the ventricles beat irregularly.',
@@ -1044,16 +1068,16 @@ const R={
 
   vt:{name:'Ventricular tachycardia',chip:'Ventricular tach (VT)',group:'vent',reg:'regular',tx:['shock'],
     origin:'<strong>A rogue spot in the ventricle muscle</strong> fires fast. The signal spreads slowly from cell to cell instead of using the fast wiring, so the ventricles squeeze poorly. The atria keep beating on their own in the background.',
-    marks:[{type:'focus',x:VT_FOCUS.x,y:VT_FOCUS.y,r:7},{type:'label',x:292,y:368,text:'Rogue signal from scar',anchor:'middle'}]},
+    marks:[{type:'focus',x:VT_FOCUS.x,y:VT_FOCUS.y,r:7},{type:'label',x:292,y:396,text:'Rogue signal from scar',anchor:'middle'}]},
   vf:{name:'Ventricular fibrillation (cardiac arrest)',chip:'Ventricular fib (VF)',group:'vent',reg:'no effective heartbeat',tx:['shock'],noRate:true,
     origin:'<strong>Countless spots in the ventricles fire chaotically.</strong> The ventricles quiver and pump no blood at all. This is cardiac arrest. The only treatment is a shock.',
-    marks:VF_FOCI.slice(0,6).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:368,text:'Chaos in the ventricles: no pumping',red:true}])},
+    marks:VF_FOCI.slice(0,6).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:396,text:'Chaos in the ventricles: no pumping',red:true}])},
   lqt:{name:'Long QT syndrome',chip:'Long QT syndrome',group:'vent',reg:'regular',sa:true,tx:['pvc'],
     origin:SINUS_OK+'The rhythm is normal but the <strong>ventricles take too long to reset</strong> after each beat (a long QT interval). An early beat that lands during the reset can set off torsades. Press the button below the tracing to trigger one.',
-    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6,hollow:true},{type:'label',x:284,y:368,text:'An early beat from here is the danger'}]},
+    marks:[{type:'focus',x:PVC_FOCUS.x,y:PVC_FOCUS.y,r:6,hollow:true},{type:'label',x:284,y:396,text:'An early beat from here is the danger'}]},
   torsades:{name:'Torsades de pointes',chip:'Torsades de pointes',group:'vent',reg:'fast, twisting',tx:['shock'],shockTo:'lqt',
     origin:'<strong>A twisting form of ventricular tachycardia.</strong> The signal spirals through ventricles that have not finished resetting, so the beats grow and shrink on the tracing. It often stops on its own, but it can turn into ventricular fibrillation at any moment.',
-    marks:VF_FOCI.slice(0,5).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:368,text:'Spiralling signal in the ventricles',red:true}])},
+    marks:VF_FOCI.slice(0,5).map(p=>({type:'focus',x:p.x,y:p.y,r:5})).concat([{type:'label',x:230,y:396,text:'Spiralling signal in the ventricles',red:true}])},
   brugada:{name:'Brugada syndrome (sinus rhythm)',chip:'Brugada syndrome',group:'vent',reg:'regular',sa:true,lead:'V1',
     origin:SINUS_OK+'The rhythm is normal. The problem is a <strong>vulnerable patch in the right ventricle</strong> that recovers unevenly and can set off ventricular fibrillation, most often during sleep or fever. Lead V1 shows the telltale pattern.',
     marks:[{type:'zone',x:168,y:214,rx:26,ry:15},{type:'label',x:172,y:248,text:'Vulnerable area',red:true}]},
@@ -1083,7 +1107,7 @@ for(const id in PATHS){
   const d=el('circle',{r:5,class:'dot'});gDots.appendChild(d);dotEl[id]=d;
 }
 const ripPool=[];for(let i=0;i<22;i++){const c=el('circle',{class:'ripple',r:6});gRip.appendChild(c);ripPool.push(c);}
-const CH={};['ra','la','rv','lv'].forEach(id=>{const p=$('#ch-'+id);CH[id]={el:p,cx:+p.dataset.cx,cy:+p.dataset.cy,base:id[1]==='a'?[242,205,196]:[230,182,171]};});
+const CH={};['ra','la','rv','lv'].forEach(id=>{const p=$('#ch-'+id);CH[id]={el:p,cx:+p.dataset.cx,cy:+p.dataset.cy,base:id[1]==='a'?[242,200,185]:[238,182,166]};});
 const ACTIVE=[207,74,61];
 const mix=(a,b,p)=>`rgb(${Math.round(a[0]+(b[0]-a[0])*p)},${Math.round(a[1]+(b[1]-a[1])*p)},${Math.round(a[2]+(b[2]-a[2])*p)})`;
 const LEADS={ra:'M74,38 C92,40 100,72 104,104',rv:'M74,40 C82,130 112,262 150,330',lv:'M74,34 C170,6 344,30 350,196 C352,236 342,258 330,272'};
@@ -1109,7 +1133,7 @@ function buildMarks(cfg){
     }else if(m.type==='zone'){
       gMarks.appendChild(el('ellipse',{class:'zone',cx:m.x,cy:m.y,rx:m.rx,ry:m.ry}));
     }else if(m.type==='label'){
-      const t=el('text',{class:'lab'+(m.red?' red':'')+(m.teal?' teal':''),x:m.x,y:m.y,'text-anchor':m.anchor||'middle'});t.textContent=m.text;gMarks.appendChild(t);
+      const t=el('text',{class:'lab'+(m.red?' red':'')+(m.teal?' teal':''),x:m.x,y:m.y===30?18:m.y,'text-anchor':m.anchor||'middle'});t.textContent=m.text;gMarks.appendChild(t);
     }
   });
 }
@@ -1185,7 +1209,7 @@ function render(){
     if(quiv[id]){p=0.3+0.25*Math.random();jx=(Math.random()-0.5)*3;jy=(Math.random()-0.5)*3;}
     const s=1-0.055*p;
     c.el.setAttribute('transform',`translate(${c.cx+jx},${c.cy+jy}) scale(${s}) translate(${-c.cx},${-c.cy})`);
-    c.el.style.fill=mix(c.base,ACTIVE,p);
+    c.el.style.color=mix(c.base,ACTIVE,p);
   }
   const latest={};
   for(const e of S.events){if(e.k==='travel'&&e.t0<=t&&t<e.t1+0.4){if(!latest[e.path]||e.t0>latest[e.path].t0)latest[e.path]=e;}}
